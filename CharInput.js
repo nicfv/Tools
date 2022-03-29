@@ -35,8 +35,8 @@ class CharInput {
         };
     }
 
-    isEmpty() {
-        return !this.#element.value;
+    hasValue() {
+        return !!this.#element.value;
     }
 
     getChar() {
