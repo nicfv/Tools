@@ -4,6 +4,10 @@
     font-family: sans-serif;
 }
 
+pre {
+    font-family: monospace;
+}
+
 div {
     width: max-content;
     margin: 1em auto;
