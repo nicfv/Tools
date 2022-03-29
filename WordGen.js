@@ -25,6 +25,10 @@ class WordGen {
                 }
             }
         }
+        const requiredChars = this.#charManager.getRequiredCharacters();
+        for (let i in requiredChars) {
+            wordList = wordList.filter(x => x.includes(requiredChars[i]));
+        }
         return wordList;
     }
 }

@@ -37,4 +37,16 @@ class CharManager {
         }
         return alph;
     }
+
+    getRequiredCharacters() {
+        const req = [];
+        for (let i in this.#charInputs) {
+            for (let j in this.#charInputs[i]) {
+                if (this.#charInputs[i][j].hasValue() && this.#charInputs[i][j].getStatus() === CHAR_INPUT_STATUS.INCORRECT_PLACEMENT) {
+                    req.push(this.#charInputs[i][j].getChar());
+                }
+            }
+        }
+        return req;
+    }
 }
