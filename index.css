@@ -1,5 +1,9 @@
 @import url('https://necolas.github.io/normalize.css/8.0.1/normalize.css');
 
+* {
+    font-family: sans-serif;
+}
+
 div {
     width: max-content;
     margin: 1em auto;
@@ -9,4 +13,10 @@ table input[type=text] {
     font-size: 2em;
     text-align: center;
     width: 1em;
+    color: white;
+    font-weight: bold;
+    padding: 0.25em;
+    margin: 0.25em;
+    border: 0;
+    outline: 0;
 }
