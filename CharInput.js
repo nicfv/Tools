@@ -15,24 +15,42 @@ class CharInput {
             switch (this.#status) {
                 case (CHAR_INPUT_STATUS.CORRECT): {
                     this.#status = CHAR_INPUT_STATUS.INCORRECT_PLACEMENT;
-                    this.#element.style.backgroundColor = '#993';
                     break;
                 }
                 case (CHAR_INPUT_STATUS.INCORRECT_PLACEMENT): {
                     this.#status = CHAR_INPUT_STATUS.INCORRECT;
-                    this.#element.style.backgroundColor = '#333';
                     break;
                 }
                 case (CHAR_INPUT_STATUS.INCORRECT): {
                     this.#status = CHAR_INPUT_STATUS.CORRECT;
-                    this.#element.style.backgroundColor = '#393';
                     break;
                 }
                 default: {
                     throw 'Invalid char input status.';
                 }
             }
+            this.#setColor();
         };
+    }
+
+    #setColor() {
+        switch (this.#status) {
+            case (CHAR_INPUT_STATUS.CORRECT): {
+                this.#element.style.backgroundColor = '#393';
+                break;
+            }
+            case (CHAR_INPUT_STATUS.INCORRECT_PLACEMENT): {
+                this.#element.style.backgroundColor = '#993';
+                break;
+            }
+            case (CHAR_INPUT_STATUS.INCORRECT): {
+                this.#element.style.backgroundColor = '#333';
+                break;
+            }
+            default: {
+                throw 'Invalid char input status.';
+            }
+        }
     }
 
     hasValue() {
@@ -45,6 +63,12 @@ class CharInput {
 
     getStatus() {
         return this.#status;
+    }
+
+    clear() {
+        this.#element.value = '';
+        this.#status = CHAR_INPUT_STATUS.INCORRECT;
+        this.#setColor();
     }
 }
 

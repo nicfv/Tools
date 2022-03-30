@@ -26,9 +26,9 @@ class WordGen {
             }
         }
         const requiredChars = this.#charManager.getRequiredCharacters();
-        for (let i in requiredChars) {
-            wordList = wordList.filter(x => x.includes(requiredChars[i]));
-        }
+        requiredChars.forEach(char => {
+            wordList = wordList.filter(x => x.includes(char));
+        });
         return wordList;
     }
 }

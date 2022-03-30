@@ -6,17 +6,30 @@ window.onload = () => {
     CM = new CharManager('abcde', [1, 2, 3, 4, 5]);
     WL = new WordGen(CM);
 
-    const genButton = document.getElementById('gen'),
-        words = document.getElementById('words');
+    const
+        clearButton = document.getElementById('clear'),
+        genButton = document.getElementById('gen'),
+        words = document.getElementById('words'),
+        numwords = document.getElementById('numwords');
+
+    clearButton.onclick = () => {
+        CM.clearInput();
+        words.innerText = '';
+        numwords.innerText = '';
+    };
 
     genButton.onclick = () => {
         const list = WL.getList();
-        words.innerText = '';
+        let wordString = '';
         for (let i in list) {
-            if (i > 1e3) {
-                break;
+            if (i % 5) {
+                wordString += ' ';
+            } else if (i > 0) {
+                wordString += '\n';
             }
-            words.innerText += list[i] + '\n';
+            wordString += list[i];
         }
+        words.innerText = wordString;
+        numwords.innerText = list.length + ' possible letter combinations';
     };
 };

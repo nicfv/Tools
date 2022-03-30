@@ -49,4 +49,12 @@ class CharManager {
         }
         return req;
     }
+
+    clearInput() {
+        for (let i in this.#charInputs) {
+            for (let j in this.#charInputs) {
+                this.#charInputs[i][j].clear();
+            }
+        }
+    }
 }

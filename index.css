@@ -1,11 +1,14 @@
 @import url('https://necolas.github.io/normalize.css/8.0.1/normalize.css');
 
-* {
+body {
     font-family: sans-serif;
+    background: #eee;
 }
 
 pre {
     font-family: monospace;
+    font-size: 2em;
+    color: black;
 }
 
 div {
@@ -23,4 +26,16 @@ table input[type=text] {
     margin: 0.25em;
     border: 0;
     outline: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+
+    body {
+        background: #111;
+    }
+    
+    pre {
+        color: white;
+    }
+
 }
