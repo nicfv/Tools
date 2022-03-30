@@ -28,6 +28,31 @@ table input[type=text] {
     outline: 0;
 }
 
+div#floater {
+    position: fixed;
+    right: 1em;
+    bottom: 1em;
+    color: #666;
+    border: 1px dotted #666;
+    padding: 0.25em;
+    font-family: monospace;
+    font-weight: bold;
+    cursor: help;
+}
+
+div#help {
+    display: none;
+    position: fixed;
+    right: 1em;
+    bottom: 3em;
+    color: black;
+    background: white;
+    padding: 0.25em;
+    border-radius: 0.2em;
+    border: 1px solid #666;
+    max-width: 50%;
+}
+
 @media (prefers-color-scheme: dark) {
 
     body {

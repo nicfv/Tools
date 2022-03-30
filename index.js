@@ -7,10 +7,20 @@ window.onload = () => {
     WL = new WordGen(CM);
 
     const
+        floater = document.getElementById('floater'),
+        help = document.getElementById('help'),
         clearButton = document.getElementById('clear'),
         genButton = document.getElementById('gen'),
         words = document.getElementById('words'),
         numwords = document.getElementById('numwords');
+
+    floater.onmouseover = () => {
+        help.style.display = 'inline';
+    };
+
+    floater.onmouseleave = () => {
+        help.style.display = 'none';
+    };
 
     clearButton.onclick = () => {
         CM.clearInput();
