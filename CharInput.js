@@ -1,40 +1,29 @@
-'use strict';
+import { StateColors, TriSwitch } from './TriSwitch.js';
 
-class CharInput {
+export class CharInput {
     #element;
-    #status;
-    constructor(id) {
-        this.#element = document.getElementById(id);
-        this.#element.oninput = () => {
-            this.#element.value = this.#element.value.toUpperCase();
-        };
-        // Set the default status to incorrect.
-        this.#status = CHAR_INPUT_STATUS.INCORRECT;
-        this.#element.style.backgroundColor = '#333';
-        this.#element.ondblclick = () => {
-            switch (this.#status) {
-                case (CHAR_INPUT_STATUS.CORRECT): {
-                    this.#status = CHAR_INPUT_STATUS.INCORRECT_PLACEMENT;
-                    break;
-                }
-                case (CHAR_INPUT_STATUS.INCORRECT_PLACEMENT): {
-                    this.#status = CHAR_INPUT_STATUS.INCORRECT;
-                    break;
-                }
-                case (CHAR_INPUT_STATUS.INCORRECT): {
-                    this.#status = CHAR_INPUT_STATUS.CORRECT;
-                    break;
-                }
-                default: {
-                    throw 'Invalid char input status.';
-                }
-            }
-            this.#setColor();
-        };
+    #switch;
+    constructor(parent = document.body) {
+        const container = document.createElement('div'),
+            switchDiv = document.createElement('div');
+        container.setAttribute('class', 'CharInput');
+        this.#element = document.createElement('input');
+        this.#element.oninput = () => this.#element.value = this.#element.value.toUpperCase();
+        this.#element.setAttribute('maxLength', '1');
+        container.appendChild(this.#element);
+        container.appendChild(switchDiv);
+        parent.appendChild(container);
+        this.#switch = new TriSwitch(40, 25, [
+            new StateColors('#999', '#333', '#999'),
+            new StateColors('#999', '#030', '#999'),
+            new StateColors('#999', '#330', '#999')
+        ], 1.5, 3.5, 0.5, true, switchDiv);
+        this.#switch.onclick = () => this.#setColor();
+        this.#setColor();
     }
 
     #setColor() {
-        switch (this.#status) {
+        switch (this.getStatus()) {
             case (CHAR_INPUT_STATUS.CORRECT): {
                 this.#element.style.backgroundColor = '#393';
                 break;
@@ -48,7 +37,7 @@ class CharInput {
                 break;
             }
             default: {
-                throw 'Invalid char input status.';
+                throw new InvalidCharInputStatus(this.getStatus());
             }
         }
     }
@@ -62,18 +51,26 @@ class CharInput {
     }
 
     getStatus() {
-        return this.#status;
+        return this.#switch.getState();
     }
 
     clear() {
         this.#element.value = '';
-        this.#status = CHAR_INPUT_STATUS.INCORRECT;
+        while (this.#switch.getState() !== 0) {
+            this.#switch.click();
+        }
         this.#setColor();
     }
 }
 
-const CHAR_INPUT_STATUS = {
-    CORRECT: 0,
-    INCORRECT_PLACEMENT: 1,
-    INCORRECT: 2,
+export const CHAR_INPUT_STATUS = {
+    CORRECT: 1,
+    INCORRECT_PLACEMENT: 2,
+    INCORRECT: 0,
 };
+
+export class InvalidCharInputStatus extends Error {
+    constructor(status = 0) {
+        super('Invalid char input status: ' + status);
+    }
+}

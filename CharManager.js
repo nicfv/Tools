@@ -1,59 +1,93 @@
-'use strict';
+import { CharInput, CHAR_INPUT_STATUS, InvalidCharInputStatus } from './CharInput.js';
 
-class CharManager {
+/**
+ * Represents a class that manages the character input elements.
+ */
+export class CharManager {
     #charInputs = [];
-    constructor(wordIdx, charIdx) {
-        for (let i in wordIdx) {
-            this.#charInputs[i] = [];
-            for (let j in charIdx) {
-                const id = wordIdx[i] + charIdx[j];
-                this.#charInputs[i][j] = new CharInput(id);
+    #alph;
+    /**
+     * Create a new `CharManager`
+     */
+    constructor(words = 5, chars = 5, allowLetters = true, allowNumbers = false, parent = document.body) {
+        const ALPH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', NUMS = '1234567890';
+        this.#alph = (allowLetters ? ALPH : '') + (allowNumbers ? NUMS : '');
+        for (let w = 0; w < words; w++) {
+            const WORD_DIV = document.createElement('div');
+            WORD_DIV.setAttribute('class', 'word');
+            this.#charInputs[w] = [];
+            for (let c = 0; c < chars; c++) {
+                this.#charInputs[w][c] = new CharInput(WORD_DIV);
             }
+            parent.appendChild(WORD_DIV);
         }
     }
-
-    generateValidCharsForPosition(k) {
-        for (let i in this.#charInputs) {
-            if (this.#charInputs[i][k].hasValue() && this.#charInputs[i][k].getStatus() === CHAR_INPUT_STATUS.CORRECT) {
-                return [this.#charInputs[i][k].getChar()];
+    /**
+     * Generate an array of characters that are valid for a certain position in the word.
+     */
+    generateValidCharsForPosition(c) {
+        let alph = this.#prefilter();
+        for (let w in this.#charInputs) {
+            const input = this.#charInputs[w][c];
+            if (input instanceof CharInput) {
+                if (input.hasValue()) {
+                    switch (input.getStatus()) {
+                        case (CHAR_INPUT_STATUS.CORRECT): {
+                            return [input.getChar()];
+                        }
+                        case (CHAR_INPUT_STATUS.INCORRECT):
+                        case (CHAR_INPUT_STATUS.INCORRECT_PLACEMENT): {
+                            alph = alph.replace(input.getChar(), '');
+                            break;
+                        }
+                        default: {
+                            throw new InvalidCharInputStatus(input.getStatus());
+                        }
+                    }
+                }
+            } else {
+                return [];
             }
         }
-        const alph = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-        for (let i in this.#charInputs) {
-            if (this.#charInputs[i][k].hasValue() && this.#charInputs[i][k].getStatus() === CHAR_INPUT_STATUS.INCORRECT_PLACEMENT) {
-                const findIdx = alph.indexOf(this.#charInputs[i][k].getChar());
-                if (findIdx >= 0) {
-                    alph.splice(findIdx, 1);
-                }
-            }
-            for (let j in this.#charInputs[i]) {
-                if (this.#charInputs[i][j].hasValue() && this.#charInputs[i][j].getStatus() === CHAR_INPUT_STATUS.INCORRECT) {
-                    const findIdx = alph.indexOf(this.#charInputs[i][j].getChar());
-                    if (findIdx >= 0) {
-                        alph.splice(findIdx, 1);
-                    }
+        return [...alph];
+    }
+    /**
+     * Apply a pre-filter to the alphabet to get rid of characters that do not appear in the word.
+     */
+    #prefilter() {
+        let alph = this.#alph;
+        for (let w in this.#charInputs) {
+            for (let c in this.#charInputs[w]) {
+                const input = this.#charInputs[w][c];
+                if (input instanceof CharInput && input.hasValue() && input.getStatus() === CHAR_INPUT_STATUS.INCORRECT) {
+                    alph = alph.replace(input.getChar(), '');
                 }
             }
         }
         return alph;
     }
-
+    /**
+     * Generate an array of characters that are required in the word but are not in the correct position.
+     */
     getRequiredCharacters() {
         const req = [];
-        for (let i in this.#charInputs) {
-            for (let j in this.#charInputs[i]) {
-                if (this.#charInputs[i][j].hasValue() && this.#charInputs[i][j].getStatus() === CHAR_INPUT_STATUS.INCORRECT_PLACEMENT) {
-                    req.push(this.#charInputs[i][j].getChar());
+        for (let w in this.#charInputs) {
+            for (let c in this.#charInputs[w]) {
+                const input = this.#charInputs[w][c];
+                if (input instanceof CharInput && input.hasValue() && input.getStatus() === CHAR_INPUT_STATUS.INCORRECT_PLACEMENT) {
+                    req.push(input.getChar());
                 }
             }
         }
         return req;
     }
-
+    /**
+     * Clear all user input.
+     */
     clearInput() {
-        for (let i in this.#charInputs) {
-            for (let j in this.#charInputs) {
-                this.#charInputs[i][j].clear();
+        for (let w in this.#charInputs) {
+            for (let c in this.#charInputs[w]) {
+                this.#charInputs[w][c].clear();
             }
         }
     }

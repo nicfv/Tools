@@ -4,52 +4,15 @@
 <head>
     <title>Wordle Helper</title>
     <link rel="stylesheet" type="text/css" href="./index.css" />
-    <script type="text/javascript" src="./index.js"></script>
-    <script type="text/javascript" src="./CharInput.js"></script>
-    <script type="text/javascript" src="./CharManager.js"></script>
-    <script type="text/javascript" src="./WordGen.js"></script>
+    <script type="module" src="./index.js"></script>
+    <script type="module" src="./CharInput.js"></script>
+    <script type="module" src="./CharManager.js"></script>
+    <script type="module" src="./WordGen.js"></script>
+    <script type="module" src="./TriSwitch.js"></script>
 </head>
 
 <body>
-    <div>
-        <table>
-            <tr>
-                <td><input id="a1" type="text" maxlength="1" /></td>
-                <td><input id="a2" type="text" maxlength="1" /></td>
-                <td><input id="a3" type="text" maxlength="1" /></td>
-                <td><input id="a4" type="text" maxlength="1" /></td>
-                <td><input id="a5" type="text" maxlength="1" /></td>
-            </tr>
-            <tr>
-                <td><input id="b1" type="text" maxlength="1" /></td>
-                <td><input id="b2" type="text" maxlength="1" /></td>
-                <td><input id="b3" type="text" maxlength="1" /></td>
-                <td><input id="b4" type="text" maxlength="1" /></td>
-                <td><input id="b5" type="text" maxlength="1" /></td>
-            </tr>
-            <tr>
-                <td><input id="c1" type="text" maxlength="1" /></td>
-                <td><input id="c2" type="text" maxlength="1" /></td>
-                <td><input id="c3" type="text" maxlength="1" /></td>
-                <td><input id="c4" type="text" maxlength="1" /></td>
-                <td><input id="c5" type="text" maxlength="1" /></td>
-            </tr>
-            <tr>
-                <td><input id="d1" type="text" maxlength="1" /></td>
-                <td><input id="d2" type="text" maxlength="1" /></td>
-                <td><input id="d3" type="text" maxlength="1" /></td>
-                <td><input id="d4" type="text" maxlength="1" /></td>
-                <td><input id="d5" type="text" maxlength="1" /></td>
-            </tr>
-            <tr>
-                <td><input id="e1" type="text" maxlength="1" /></td>
-                <td><input id="e2" type="text" maxlength="1" /></td>
-                <td><input id="e3" type="text" maxlength="1" /></td>
-                <td><input id="e4" type="text" maxlength="1" /></td>
-                <td><input id="e5" type="text" maxlength="1" /></td>
-            </tr>
-        </table>
-    </div>
+    <div id="input"></div>
 
     <div>
         <button id="gen">Generate List</button>
@@ -71,17 +34,21 @@
     <div id="help">
         <b>Wordle Helper</b><br />
         Created by Nicolas Ventura<br />
-        Last updated March 29, 2022<br />
+        Last updated December 1, 2022 <i>More updates coming soon!</i><br />
         <hr /><b><u>Motivation</u></b>
-        This tool should help you think of words that are valid based on your prior guesses in Wordle. It does not spoil the answer to the daily Wordle unless your prior guesses leave only 1 valid combination of letters remaining.
+        This tool should help you think of words that are valid based on your prior guesses in Wordle. It does not spoil
+        the answer to the daily Wordle unless your prior guesses leave only 1 valid combination of letters remaining.
         <hr /><b><u>Instructions</u></b>
-        Type in your daily Wordle guesses here. The tab key allows you to automatically move to the next character without use of the mouse. Double click on the letter to cycle its color and corresponding status:
+        Type in your daily Wordle guesses here. The tab key allows you to automatically move to the next character
+        without use of the mouse. Double click on the letter to cycle its color and corresponding status:
         <ul>
             <li>Gray: the letter is not anywhere in the word</li>
             <li>Green: the letter is in the correct spot in the word</li>
             <li>Yellow: the letter is in a different spot in the word</li>
         </ul>
-        Press "Generate List" to generate a complete list of every possible combination of letters. Two text boxes will pop up with the amount of valid 5 letter combinations and with all of those combinations. Press "Clear" to clear the text, all user input, and character colors.
+        Press "Generate List" to generate a complete list of every possible combination of letters. Two text boxes will
+        pop up with the amount of valid 5 letter combinations and with all of those combinations. Press "Clear" to clear
+        the text, all user input, and character colors.
     </div>
 </body>
 

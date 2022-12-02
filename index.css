@@ -13,10 +13,42 @@ pre {
 
 div {
     width: max-content;
-    margin: 1em auto;
+    margin: 0 auto;
 }
 
-table input[type=text] {
+button {
+    border: none;
+    background: #369;
+    cursor: pointer;
+    color: white;
+    padding: 0.25em 0.5em;
+    margin: 0.25em;
+}
+
+button:hover {
+    background: #47a;
+}
+
+button:active {
+    background: #258;
+}
+
+#input {
+    display: flex;
+    flex-direction: column;
+}
+
+.word {
+    display: flex;
+    flex-direction: row;
+}
+
+.CharInput {
+    display: flex;
+    flex-direction: column;
+}
+
+.CharInput input {
     font-size: 2em;
     text-align: center;
     width: 1em;
@@ -26,6 +58,7 @@ table input[type=text] {
     margin: 0.25em;
     border: 0;
     outline: 0;
+    transition: background 0.5s;
 }
 
 div#floater {
@@ -58,7 +91,7 @@ div#help {
     body {
         background: #111;
     }
-    
+
     pre {
         color: white;
     }

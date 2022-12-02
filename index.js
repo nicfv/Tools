@@ -1,9 +1,11 @@
-'use strict';
+import { CharInput } from './CharInput.js';
+import { CharManager } from './CharManager.js';
+import { WordGen } from './WordGen.js';
 
 let CM, WL;
 
 window.onload = () => {
-    CM = new CharManager('abcde', [1, 2, 3, 4, 5]);
+    CM = new CharManager(5, 5, true, false, document.getElementById('input'));
     WL = new WordGen(CM);
 
     const

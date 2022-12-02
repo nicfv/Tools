@@ -1,34 +1,31 @@
-'use strict';
+import { CharManager } from './CharManager.js';
 
-class WordGen {
+export class WordGen {
     #charManager;
+    #words;
     constructor(charManager) {
-        this.#charManager = charManager;
+        charManager instanceof CharManager && (this.#charManager = charManager);
+        this.#words = [];
     }
 
     getList() {
-        let i = 0,
-            c1 = this.#charManager.generateValidCharsForPosition(0),
-            c2 = this.#charManager.generateValidCharsForPosition(1),
-            c3 = this.#charManager.generateValidCharsForPosition(2),
-            c4 = this.#charManager.generateValidCharsForPosition(3),
-            c5 = this.#charManager.generateValidCharsForPosition(4),
-            wordList = [];
-        for (let i1 in c1) {
-            for (let i2 in c2) {
-                for (let i3 in c3) {
-                    for (let i4 in c4) {
-                        for (let i5 in c5) {
-                            wordList[i++] = c1[i1] + c2[i2] + c3[i3] + c4[i4] + c5[i5];
-                        }
-                    }
-                }
-            }
-        }
+        this.#words = [];
+        this.#buildWords();
         const requiredChars = this.#charManager.getRequiredCharacters();
         requiredChars.forEach(char => {
-            wordList = wordList.filter(x => x.includes(char));
+            this.#words = this.#words.filter(x => x.includes(char));
         });
-        return wordList;
+        return this.#words;
+    }
+
+    #buildWords(word = '', char = 0) {
+        const chars = this.#charManager.generateValidCharsForPosition(char);
+        if (!chars.length) {
+            this.#words.push(word);
+            return;
+        }
+        for (let c in chars) {
+            this.#buildWords(word + chars[c], char + 1);
+        }
     }
 }
