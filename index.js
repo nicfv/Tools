@@ -1,36 +1,54 @@
-import { CharManager } from './CharManager.js';
+import { StateColors, TriSwitch } from './TriSwitch.js';
 import { WordGen } from './WordGen.js';
 
-let CM, WL;
+/**
+ * Global `WordGen`
+ */
+let WG;
 
+// Define default values
+const DEFAULT_GUESSES = 5,
+    DEFAULT_CHARS = 5;
+
+/**
+ * Return an HTML element given an `id`
+ */
+const el = id => document.getElementById(id);
+
+// Entry point into the program
 window.onload = () => {
-    CM = new CharManager(5, 5, true, false, document.getElementById('input'));
-    WL = new WordGen(CM);
+    // Hide the user control panel
+    el('control').hidden = true;
 
-    const
-        floater = document.getElementById('floater'),
-        help = document.getElementById('help'),
-        clearButton = document.getElementById('clear'),
-        genButton = document.getElementById('gen'),
-        words = document.getElementById('words'),
-        numwords = document.getElementById('numwords');
+    // Build the setup menu
+    const ALPH_SWITCH = new TriSwitch(55, 25, [
+        new StateColors('#999', '#333', '#999', 'Alphabet (A-Z) Only'),
+        new StateColors('#999', '#333', '#999', 'Numbers (0-9) Only'),
+        new StateColors('#999', '#333', '#999', 'Alphabet & Numbers'),
+    ], 1.5, 3.5, 0.5, true, el('alphtype'));
 
-    floater.onmouseover = () => {
-        help.style.display = 'inline';
-    };
+    ALPH_SWITCH.onclick = () => el('p_alphtype').textContent = ALPH_SWITCH.getStateDescription();
+    el('p_alphtype').textContent = ALPH_SWITCH.getStateDescription();
 
-    floater.onmouseleave = () => {
-        help.style.display = 'none';
-    };
+    el('go').addEventListener('click', () => {
+        WG = new WordGen(el('num_guesses').value || DEFAULT_GUESSES, el('num_chars').value || DEFAULT_CHARS, ALPH_SWITCH.getState(), el('input'));
+        document.body.removeChild(el('setup'));
+        el('control').hidden = false;
+    });
 
-    clearButton.onclick = () => {
-        CM.clearInput();
-        words.innerText = '';
-        numwords.innerText = '';
-    };
+    // Add event listeners to show help menu
+    el('floater').addEventListener('mouseover', () => el('help').style.display = 'inline');
+    el('floater').addEventListener('mouseleave', () => el('help').style.display = 'none');
 
-    genButton.onclick = () => {
-        const list = WL.getList();
+    // Add control panel user input actions
+    el('clear').addEventListener('click', () => {
+        WG instanceof WordGen && WG.clearInput();
+        el('words').textContent = '';
+        el('numwords').textContent = '';
+    });
+
+    el('gen').addEventListener('click', () => {
+        const list = WG instanceof WordGen && WG.getList();
         let wordString = '';
         for (let i in list) {
             if (i % 5) {
@@ -40,7 +58,16 @@ window.onload = () => {
             }
             wordString += list[i];
         }
-        words.innerText = wordString;
-        numwords.innerText = list.length + ' possible letter combinations';
-    };
+        el('words').textContent = wordString;
+        el('numwords').textContent = list.length + ' possible letter combinations';
+    });
+};
+
+/**
+ * Represents the types of allowable characters in an alphabet.
+ */
+export const ALPH_TYPES = {
+    ALPH_ONLY: 0,
+    NUMS_ONLY: 1,
+    BOTH: 2,
 };

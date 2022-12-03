@@ -19,7 +19,7 @@ export class CharManager {
             WORD_DIV.setAttribute('class', 'word');
             this.#charInputs[w] = [];
             for (let c = 0; c < chars; c++) {
-                this.#charInputs[w][c] = new CharInput(WORD_DIV);
+                this.#charInputs[w][c] = new CharInput(this.#alph, WORD_DIV);
             }
             parent.appendChild(WORD_DIV);
         }

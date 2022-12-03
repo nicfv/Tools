@@ -1,4 +1,5 @@
 import { CharManager } from './CharManager.js';
+import { ALPH_TYPES } from './index.js';
 
 /**
  * Represents a class that can generate words from a `CharManager`
@@ -9,8 +10,11 @@ export class WordGen {
     /**
      * Create a new instance of `WordGen`
      */
-    constructor(charManager) {
-        charManager instanceof CharManager && (this.#charManager = charManager);
+    constructor(words = 0, chars = 0, alphType = 0, parent = document.body) {
+        this.#charManager = new CharManager(words, chars,
+            alphType === ALPH_TYPES.ALPH_ONLY || alphType === ALPH_TYPES.BOTH,
+            alphType === ALPH_TYPES.NUMS_ONLY || alphType === ALPH_TYPES.BOTH,
+            parent);
         this.#words = [];
     }
     /**
@@ -38,5 +42,11 @@ export class WordGen {
         for (let c in chars) {
             this.#buildWords(word + chars[c], char + 1);
         }
+    }
+    /**
+     * Clear all user input.
+     */
+    clearInput() {
+        this.#charManager.clearInput();
     }
 }

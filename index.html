@@ -9,18 +9,29 @@
     <script type="module" src="./CharManager.js"></script>
     <script type="module" src="./WordGen.js"></script>
     <script type="module" src="./TriSwitch.js"></script>
+    <meta charset="UTF-8">
+    <meta name="description" content="Generate all possible combinations of letters for your guesses in Wordle.">
+    <meta name="keywords" content="Wordle">
+    <meta name="author" content="Nicolas Ventura">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
-    <!-- <div id="setup">
-        <input type="number" placeholder="Words" min="1" step="1" />
-        <input type="number" placeholder="Letters per word" min="1" step="1" />
-        <input type="checkbox" />
-    </div> -->
+    <div id="setup">
+        <div><input type="number" id="num_guesses" placeholder="5" min="1" max="10" step="1" /><label
+                for="num_guesses">Total number of guesses</label></div>
+        <div><input type="number" id="num_chars" placeholder="5" min="1" max="20" step="1" /><label
+                for="num_chars">Letters in each word</label></div>
+        <div>
+            <span id="alphtype"></span>
+            <span id="p_alphtype">Default</span>
+        </div>
+        <button id="go">Go</button>
+    </div>
 
     <div id="input"></div>
 
-    <div>
+    <div id="control">
         <button id="gen">Generate List</button>
         <button id="clear">Clear</button>
     </div>
@@ -40,7 +51,7 @@
     <div id="help">
         <b>Wordle Helper</b><br />
         Created by Nicolas Ventura<br />
-        Last updated December 1, 2022 <i>More updates coming soon!</i><br />
+        Last updated December 2, 2022 <i>More updates coming soon!</i><br />
         <hr /><b><u>Motivation</u></b>
         This tool should help you think of words that are valid based on your prior guesses in Wordle. It does not spoil
         the answer to the daily Wordle unless your prior guesses leave only 1 valid combination of letters remaining.

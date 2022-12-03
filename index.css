@@ -1,5 +1,14 @@
 @import url('https://necolas.github.io/normalize.css/8.0.1/normalize.css');
 
+* {
+    outline: none;
+}
+
+html,
+body {
+    height: 100%;
+}
+
 body {
     font-family: sans-serif;
     background: #eee;
@@ -57,8 +66,40 @@ button:active {
     padding: 0.25em;
     margin: 0.25em;
     border: 0;
-    outline: 0;
     transition: background 0.5s;
+}
+
+#setup {
+    height: 100%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#setup>div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+#setup input {
+    width: 3em;
+    font-weight: bold;
+    color: white;
+    background: #333;
+    padding: 0.25em;
+    margin: 0.25em;
+    border: 0;
+}
+
+#setup button {
+    margin: 0 auto;
+}
+
+#setup svg {
+    margin: 0.25em;
 }
 
 div#floater {

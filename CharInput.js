@@ -3,12 +3,12 @@ import { StateColors, TriSwitch } from './TriSwitch.js';
 export class CharInput {
     #element;
     #switch;
-    constructor(parent = document.body) {
+    constructor(allowedChars = '', parent = document.body) {
         const container = document.createElement('div'),
             switchDiv = document.createElement('div');
         container.setAttribute('class', 'CharInput');
         this.#element = document.createElement('input');
-        this.#element.oninput = () => this.#element.value = this.#element.value.toUpperCase();
+        this.#element.oninput = () => this.#element.value = (allowedChars.includes(this.#element.value.toUpperCase()) ? this.#element.value.toUpperCase() : '');
         this.#element.setAttribute('maxLength', '1');
         container.appendChild(this.#element);
         container.appendChild(switchDiv);
@@ -56,7 +56,7 @@ export class CharInput {
 
     clear() {
         this.#element.value = '';
-        while (this.#switch.getState() !== 0) {
+        while (this.#switch.getState() !== CHAR_INPUT_STATUS.INCORRECT) {
             this.#switch.click();
         }
         this.#setColor();

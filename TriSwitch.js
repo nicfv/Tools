@@ -100,15 +100,22 @@ export class TriSwitch {
     getState() {
         return this.#state;
     }
+    /**
+     * Return the current state description of the `TriSwitch`
+     */
+    getStateDescription() {
+        return this.#colors[this.#state].optionalDescription;
+    }
 }
 
 /**
  * Represents a group of colors that represent a state of a `TriSwitch`
  */
 export class StateColors {
-    constructor(borderColor = '#000', backgroundColor = '#000', switchColor = '#000') {
+    constructor(borderColor = '#000', backgroundColor = '#000', switchColor = '#000', optionalDescription = '') {
         this.borderColor = borderColor;
         this.backgroundColor = backgroundColor;
         this.switchColor = switchColor;
+        this.optionalDescription = optionalDescription;
     }
 }
