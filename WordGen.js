@@ -2,9 +2,9 @@ import { CharInput, CHAR_INPUT_STATUS } from './CharInput.js';
 import { ALPH_TYPES } from './index.js';
 
 /**
- * Represents a class that manages the character input elements.
+ * Represents a class that manages the character input elements and can generate a list of possible words.
  */
-export class CharManager {
+export class WordGen {
     #charInputs;
     #alph;
     #prefiltered;

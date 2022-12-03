@@ -12,12 +12,12 @@ body {
 body {
     font-family: sans-serif;
     background: #eee;
+    color: black;
 }
 
 pre {
     font-family: monospace;
     font-size: 2em;
-    color: black;
 }
 
 div {
@@ -131,9 +131,6 @@ div#help {
 
     body {
         background: #111;
-    }
-
-    pre {
         color: white;
     }
 
