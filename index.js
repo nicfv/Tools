@@ -1,4 +1,3 @@
-import { CharInput } from './CharInput.js';
 import { CharManager } from './CharManager.js';
 import { WordGen } from './WordGen.js';
 

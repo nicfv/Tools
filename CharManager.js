@@ -6,12 +6,14 @@ import { CharInput, CHAR_INPUT_STATUS, InvalidCharInputStatus } from './CharInpu
 export class CharManager {
     #charInputs = [];
     #alph;
+    #prefiltered;
     /**
      * Create a new `CharManager`
      */
     constructor(words = 5, chars = 5, allowLetters = true, allowNumbers = false, parent = document.body) {
         const ALPH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', NUMS = '1234567890';
         this.#alph = (allowLetters ? ALPH : '') + (allowNumbers ? NUMS : '');
+        this.#prefiltered = this.#alph;
         for (let w = 0; w < words; w++) {
             const WORD_DIV = document.createElement('div');
             WORD_DIV.setAttribute('class', 'word');
@@ -26,7 +28,7 @@ export class CharManager {
      * Generate an array of characters that are valid for a certain position in the word.
      */
     generateValidCharsForPosition(c) {
-        let alph = this.#prefilter();
+        let alph = this.#prefiltered;
         for (let w in this.#charInputs) {
             const input = this.#charInputs[w][c];
             if (input instanceof CharInput) {
@@ -54,17 +56,16 @@ export class CharManager {
     /**
      * Apply a pre-filter to the alphabet to get rid of characters that do not appear in the word.
      */
-    #prefilter() {
-        let alph = this.#alph;
+    prefilter() {
+        this.#prefiltered = this.#alph;
         for (let w in this.#charInputs) {
             for (let c in this.#charInputs[w]) {
                 const input = this.#charInputs[w][c];
                 if (input instanceof CharInput && input.hasValue() && input.getStatus() === CHAR_INPUT_STATUS.INCORRECT) {
-                    alph = alph.replace(input.getChar(), '');
+                    this.#prefiltered = this.#prefiltered.replace(input.getChar(), '');
                 }
             }
         }
-        return alph;
     }
     /**
      * Generate an array of characters that are required in the word but are not in the correct position.
