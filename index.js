@@ -17,24 +17,29 @@ const el = id => document.getElementById(id);
 
 // Entry point into the program
 window.onload = () => {
-    // Hide the user control panel
-    el('control').hidden = true;
+    // Hide the main user panel
+    el('main').style.display = 'none';
 
     // Build the setup menu
     const ALPH_SWITCH = new TriSwitch(55, 25, [
         new StateColors('#999', '#333', '#999', 'Alphabet (A-Z) Only'),
         new StateColors('#999', '#333', '#999', 'Numbers (0-9) Only'),
-        new StateColors('#999', '#333', '#999', 'Numbers & Math'),
         new StateColors('#999', '#333', '#999', 'Alphabet & Numbers'),
+        new StateColors('#999', '#333', '#999', 'Custom Charset'),
     ], 1.5, 3.5, 0.5, true, el('alphtype'));
 
-    ALPH_SWITCH.onclick = () => el('p_alphtype').textContent = ALPH_SWITCH.getStateDescription();
-    el('p_alphtype').textContent = ALPH_SWITCH.getStateDescription();
+    const updateSetup = () => {
+        el('p_alphtype').textContent = ALPH_SWITCH.getStateDescription();
+        el('txt_cust').hidden = ALPH_SWITCH.getState() !== ALPH_TYPES.CUST_ONLY;
+    };
+
+    ALPH_SWITCH.onclick = updateSetup;
+    updateSetup();
 
     el('go').addEventListener('click', () => {
-        WG = new WordGen(el('num_guesses').value || DEFAULT_GUESSES, el('num_chars').value || DEFAULT_CHARS, ALPH_SWITCH.getState(), el('input'));
+        WG = new WordGen(el('num_guesses').value || DEFAULT_GUESSES, el('num_chars').value || DEFAULT_CHARS, ALPH_SWITCH.getState(), el('txt_cust').value, el('input'));
         document.body.removeChild(el('setup'));
-        el('control').hidden = false;
+        el('main').style.display = 'flex';
     });
 
     // Add event listeners to show help menu
@@ -47,6 +52,8 @@ window.onload = () => {
         el('words').textContent = '';
         el('numwords').textContent = '';
     });
+
+    el('copy').addEventListener('click', () => navigator.clipboard.writeText(el('words').textContent));
 
     el('gen').addEventListener('click', () => {
         const list = WG instanceof WordGen && WG.generate();
@@ -70,6 +77,6 @@ window.onload = () => {
 export const ALPH_TYPES = {
     ALPH_ONLY: 0,
     NUMS_ONLY: 1,
-    NUMS_MATH: 2,
-    ALPH_NUMS: 3,
+    ALPH_NUMS: 2,
+    CUST_ONLY: 3,
 };

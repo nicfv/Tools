@@ -1,8 +1,14 @@
 import { StateColors, TriSwitch } from './TriSwitch.js';
 
+/**
+ * Represents a control that allows a user to input a single character.
+ */
 export class CharInput {
     #element;
     #switch;
+    /**
+     * Create a new `CharInput` and append it to the parent element.
+     */
     constructor(allowedChars = '', parent = document.body) {
         const container = document.createElement('div'),
             switchDiv = document.createElement('div');
@@ -21,7 +27,9 @@ export class CharInput {
         this.#switch.onclick = () => this.#setColor();
         this.#setColor();
     }
-
+    /**
+     * Paint the color of this element.
+     */
     #setColor() {
         switch (this.getStatus()) {
             case (CHAR_INPUT_STATUS.CORRECT): {
@@ -41,19 +49,27 @@ export class CharInput {
             }
         }
     }
-
+    /**
+     * Determine whether this input has a value entered.
+     */
     hasValue() {
         return !!this.#element.value;
     }
-
+    /**
+     * Return the value entered into this input.
+     */
     getChar() {
         return this.#element.value;
     }
-
+    /**
+     * Return the status of this input.
+     */
     getStatus() {
         return this.#switch.getState();
     }
-
+    /**
+     * Clear the data in this input.
+     */
     clear() {
         this.#element.value = '';
         while (this.#switch.getState() !== CHAR_INPUT_STATUS.INCORRECT) {
@@ -63,6 +79,9 @@ export class CharInput {
     }
 }
 
+/**
+ * Represents the statuses for character input.
+ */
 export const CHAR_INPUT_STATUS = {
     CORRECT: 1,
     INCORRECT_PLACEMENT: 2,

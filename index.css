@@ -18,6 +18,11 @@ body {
 pre {
     font-family: monospace;
     font-size: 2em;
+    margin: 0;
+}
+
+p {
+    margin: 0;
 }
 
 div {
@@ -71,7 +76,6 @@ button:active {
 
 #setup {
     height: 100%;
-    color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -85,7 +89,6 @@ button:active {
 }
 
 #setup input {
-    width: 3em;
     font-weight: bold;
     color: white;
     background: #333;
@@ -94,12 +97,31 @@ button:active {
     border: 0;
 }
 
+#setup input[type=number] {
+    width: 3em;
+}
+
 #setup button {
     margin: 0 auto;
 }
 
 #setup svg {
     margin: 0.25em;
+}
+
+#main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#out {
+    height: 100%;
+    overflow-y: auto;
+    margin-bottom: 1em;
+    min-height: 4em;
+    padding: 0 0.5em;
 }
 
 div#floater {

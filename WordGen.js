@@ -12,12 +12,12 @@ export class WordGen {
     /**
      * Create a new `CharManager`
      */
-    constructor(words = 5, chars = 5, alphType = 0, parent = document.body) {
-        const ALPH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', NUMS = '1234567890', MATH = '!()*+-./<=>^',
-            ALLOW_ALPH = alphType === ALPH_TYPES.ALPH_NUMS || alphType === ALPH_TYPES.ALPH_ONLY,
-            ALLOW_NUMS = alphType === ALPH_TYPES.ALPH_NUMS || alphType === ALPH_TYPES.NUMS_MATH || alphType === ALPH_TYPES.NUMS_ONLY,
-            ALLOW_MATH = alphType === ALPH_TYPES.NUMS_MATH;
-        this.#alph = (ALLOW_ALPH ? ALPH : '') + (ALLOW_NUMS ? NUMS : '') + (ALLOW_MATH ? MATH : '');
+    constructor(words = 5, chars = 5, alphType = 0, customCharset = '', parent = document.body) {
+        const ALPH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', NUMS = '1234567890',
+            ALLOW_ALPH = alphType === ALPH_TYPES.ALPH_ONLY || alphType === ALPH_TYPES.ALPH_NUMS,
+            ALLOW_NUMS = alphType === ALPH_TYPES.NUMS_ONLY || alphType === ALPH_TYPES.ALPH_NUMS,
+            ALLOW_CUST = alphType === ALPH_TYPES.CUST_ONLY;
+        this.#alph = (ALLOW_ALPH ? ALPH : '') + (ALLOW_NUMS ? NUMS : '') + (ALLOW_CUST ? this.#removeDuplicateChars(customCharset) : '');
         this.#prefiltered = this.#alph;
         this.#charInputs = [];
         this.#words = [];
@@ -30,6 +30,18 @@ export class WordGen {
             }
             parent.appendChild(WORD_DIV);
         }
+    }
+    /**
+     * Return the allowable character set.
+     */
+    getCharset() {
+        return this.#alph;
+    }
+    /**
+     * Remove duplicate characters in the custom charset.
+     */
+    #removeDuplicateChars(str = '') {
+        return [...new Set(str.toUpperCase())].sort().join('');
     }
     /**
      * Generate an array of characters that are valid for a certain position in the word.
