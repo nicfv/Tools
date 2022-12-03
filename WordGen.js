@@ -53,16 +53,16 @@ export class WordGen {
             if (input instanceof CharInput) {
                 if (input.hasValue()) {
                     if (input.getStatus() === CHAR_INPUT_STATUS.CORRECT) {
-                        return [input.getChar()];
+                        return input.getChar();
                     } else if (input.getStatus() === CHAR_INPUT_STATUS.INCORRECT_PLACEMENT) {
                         alph = alph.replace(input.getChar(), '');
                     }
                 }
             } else {
-                return [];
+                return '';
             }
         }
-        return [...alph];
+        return alph;
     }
     /**
      * Apply a pre-filter to the alphabet to get rid of characters that do not appear in the word.
@@ -122,7 +122,9 @@ export class WordGen {
     #buildWords(word = '', char = 0) {
         const chars = this.#generateValidCharsForPosition(char);
         if (!chars.length) {
-            this.#words.push(word);
+            if (word) {
+                this.#words.push(word);
+            }
             return;
         }
         for (let c in chars) {

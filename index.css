@@ -2,6 +2,7 @@
 
 * {
     outline: none;
+    box-sizing: border-box;
 }
 
 html,
@@ -47,6 +48,16 @@ button:active {
     background: #258;
 }
 
+button:disabled {
+    background: #666;
+    cursor: default;
+}
+
+button[small] {
+    font-size: 0.75em;
+    margin: 0;
+}
+
 #input {
     display: flex;
     flex-direction: column;
@@ -65,7 +76,7 @@ button:active {
 .CharInput input {
     font-size: 2em;
     text-align: center;
-    width: 1em;
+    width: 1.5em;
     color: white;
     font-weight: bold;
     padding: 0.25em;
@@ -124,29 +135,18 @@ button:active {
     padding: 0 0.5em;
 }
 
-div#floater {
+#help {
+    display: block;
     position: fixed;
-    right: 1em;
-    bottom: 1em;
-    color: #666;
-    border: 1px dotted #666;
-    padding: 0.25em;
-    font-family: monospace;
-    font-weight: bold;
-    cursor: help;
-}
-
-div#help {
-    display: none;
-    position: fixed;
-    right: 1em;
-    bottom: 3em;
+    right: max(calc(5em - 100%), -40em);
+    top: 0;
+    height: 100%;
+    overflow-y: auto;
     color: black;
-    background: white;
+    background: #dda;
     padding: 0.25em;
-    border-radius: 0.2em;
-    border: 1px solid #666;
-    max-width: 50%;
+    width: min(calc(100% - 5em), 40em);
+    transition: right 1s;
 }
 
 @media (prefers-color-scheme: dark) {

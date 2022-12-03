@@ -27,7 +27,7 @@
             <span id="alphtype"></span>
             <span id="p_alphtype">Default</span>
         </div>
-        <input type="text" id="txt_cust" placeholder="Custom Charset" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ" />
+        <input type="text" id="txt_cust" placeholder="Custom Charset" />
         <button id="go">Go</button>
     </div>
 
@@ -36,8 +36,8 @@
 
         <div>
             <button id="gen">Generate List</button>
-            <button id="copy">Copy</button>
-            <button id="clear">Clear</button>
+            <button id="copy" disabled>Copy</button>
+            <button id="clear" disabled>Clear</button>
         </div>
 
         <div>
@@ -49,28 +49,40 @@
         </div>
     </div>
 
-    <div id="floater">
-        i
-    </div>
-
     <div id="help">
-        <b>Wordle Helper</b><br />
+        <b><u>Wordle Helper</u></b> v2.0.0<br />
         Created by Nicolas Ventura<br />
-        Last updated December 2, 2022 <i>More updates coming soon!</i><br />
+        Last updated December 2, 2022<br />
         <hr /><b><u>Motivation</u></b>
-        This tool should help you think of words that are valid based on your prior guesses in Wordle. It does not spoil
-        the answer to the daily Wordle unless your prior guesses leave only 1 valid combination of letters remaining.
+        This tool should help you think of your next Wordle guess by generating a list of all possible valid
+        combinations of letters based on your prior guesses. This is not affiliated with Wordle whatsoever and cannot
+        determine the daily answer, so no spoilers here! This tool also works for other games similar to Wordle by
+        allowing you to change the number of guesses, number of letters, and changing the available character set.
+        <hr /><b><u>Setup</u></b> Before using the tool, follow these steps in the setup wizard.
+        <ol>
+            <li>Input the total number of allowed guesses and the number of letters in each guess for the Wordle game
+                you are playing</li>
+            <li>Select the type of allowed characters using the switch</li>
+            <li>If you choose <b>Custom Charset</b>, you will be prompted with a text box to enter all allowed
+                characters in your Wordle game. For instance, a math Wordle may have these allowed characters:
+                <code>1234567890-+*/=</code>
+            </li>
+            <li>Click <button small>Go</button> to generate a very similar interface to the game you are playing</li>
+        </ol>
         <hr /><b><u>Instructions</u></b>
         Type in your daily Wordle guesses here. The tab key allows you to automatically move to the next character
-        without use of the mouse. Double click on the letter to cycle its color and corresponding status:
+        without using the mouse. Click on the switch below each input to cycle its color and corresponding status:
         <ul>
-            <li>Gray: the letter is not anywhere in the word</li>
-            <li>Green: the letter is in the correct spot in the word</li>
-            <li>Yellow: the letter is in a different spot in the word</li>
+            <li><b style="color: #333">Gray</b> The letter is not anywhere in the word</li>
+            <li><b style="color: #393">Green</b> The letter is in the correct spot in the word</li>
+            <li><b style="color: #993">Yellow</b> The letter is in a different spot in the word</li>
         </ul>
-        Press "Generate List" to generate a complete list of every possible combination of letters. Two text boxes will
-        pop up with the amount of valid 5 letter combinations and with all of those combinations. Press "Clear" to clear
-        the text, all user input, and character colors.
+        Press <button small>Generate List</button> to generate a complete list of every possible combination of letters.
+        This could take a while. After it loads, one text box shows the count of valid 5 letter combinations, and
+        another shows all of those combinations. Press <button small>Copy</button> to copy the list of words to the
+        clipboard. Press <button small>Clear</button> to clear the text, all user input, and character colors.
+        <hr /><b><u>Allowed Characters</u></b>
+        <p id="charset">None yet. Press <button small>Go</button> to start.</p>
     </div>
 </body>
 
