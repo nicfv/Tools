@@ -1,10 +1,10 @@
+import { CharManager } from './CharManager.js';
 import { StateColors, TriSwitch } from './TriSwitch.js';
-import { WordGen } from './WordGen.js';
 
 /**
- * Global `WordGen`
+ * Global
  */
-let WG;
+let CM;
 
 // Define default values
 const DEFAULT_GUESSES = 5,
@@ -24,6 +24,7 @@ window.onload = () => {
     const ALPH_SWITCH = new TriSwitch(55, 25, [
         new StateColors('#999', '#333', '#999', 'Alphabet (A-Z) Only'),
         new StateColors('#999', '#333', '#999', 'Numbers (0-9) Only'),
+        new StateColors('#999', '#333', '#999', 'Numbers & Math'),
         new StateColors('#999', '#333', '#999', 'Alphabet & Numbers'),
     ], 1.5, 3.5, 0.5, true, el('alphtype'));
 
@@ -31,7 +32,7 @@ window.onload = () => {
     el('p_alphtype').textContent = ALPH_SWITCH.getStateDescription();
 
     el('go').addEventListener('click', () => {
-        WG = new WordGen(el('num_guesses').value || DEFAULT_GUESSES, el('num_chars').value || DEFAULT_CHARS, ALPH_SWITCH.getState(), el('input'));
+        CM = new CharManager(el('num_guesses').value || DEFAULT_GUESSES, el('num_chars').value || DEFAULT_CHARS, ALPH_SWITCH.getState(), el('input'));
         document.body.removeChild(el('setup'));
         el('control').hidden = false;
     });
@@ -42,13 +43,13 @@ window.onload = () => {
 
     // Add control panel user input actions
     el('clear').addEventListener('click', () => {
-        WG instanceof WordGen && WG.clearInput();
+        CM instanceof CharManager && CM.clearInput();
         el('words').textContent = '';
         el('numwords').textContent = '';
     });
 
     el('gen').addEventListener('click', () => {
-        const list = WG instanceof WordGen && WG.getList();
+        const list = CM instanceof CharManager && CM.generate();
         let wordString = '';
         for (let i in list) {
             if (i % 5) {
@@ -69,5 +70,6 @@ window.onload = () => {
 export const ALPH_TYPES = {
     ALPH_ONLY: 0,
     NUMS_ONLY: 1,
-    BOTH: 2,
+    NUMS_MATH: 2,
+    ALPH_NUMS: 3,
 };

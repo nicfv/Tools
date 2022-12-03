@@ -37,7 +37,7 @@ export class CharInput {
                 break;
             }
             default: {
-                throw new InvalidCharInputStatus(this.getStatus());
+                throw 'Invalid char input status: ' + this.getStatus();
             }
         }
     }
@@ -68,9 +68,3 @@ export const CHAR_INPUT_STATUS = {
     INCORRECT_PLACEMENT: 2,
     INCORRECT: 0,
 };
-
-export class InvalidCharInputStatus extends Error {
-    constructor(status = 0) {
-        super('Invalid char input status: ' + status);
-    }
-}
