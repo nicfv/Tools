@@ -23,9 +23,9 @@ window.onload = () => {
 
     // Build the setup menu
     const ALPH_SWITCH = new TriSwitch(55, 25, [
+        new StateColors('#999', '#333', '#999', 'Classic Wordle'),
+        new StateColors('#999', '#333', '#999', 'Math Wordle'),
         new StateColors('#999', '#333', '#999', 'Alphabet (A-Z) Only'),
-        new StateColors('#999', '#333', '#999', 'Numbers (0-9) Only'),
-        new StateColors('#999', '#333', '#999', 'Alphabet & Numbers'),
         new StateColors('#999', '#333', '#999', 'Custom Charset'),
     ], 1.5, 3.5, 0.5, true, el('alphtype'));
 
@@ -33,6 +33,10 @@ window.onload = () => {
         el('p_alphtype').textContent = ALPH_SWITCH.getStateDescription();
         el('txt_cust').hidden = ALPH_SWITCH.getState() !== ALPH_TYPES.CUST_ONLY;
         el('go').disabled = (ALPH_SWITCH.getState() === ALPH_TYPES.CUST_ONLY && !el('txt_cust').value);
+        el('num_chars').disabled = (ALPH_SWITCH.getState() === ALPH_TYPES.WORD_DICT);
+        if (ALPH_SWITCH.getState() === ALPH_TYPES.WORD_DICT) {
+            el('num_chars').value = '';
+        }
     };
 
     ALPH_SWITCH.onclick = updateSetup;
@@ -84,8 +88,8 @@ window.onload = () => {
  * Represents the types of allowable characters in an alphabet.
  */
 export const ALPH_TYPES = {
-    ALPH_ONLY: 0,
-    NUMS_ONLY: 1,
-    ALPH_NUMS: 2,
+    WORD_DICT: 0,
+    MATH_SOLV: 1,
+    ALPH_ONLY: 2,
     CUST_ONLY: 3,
 };

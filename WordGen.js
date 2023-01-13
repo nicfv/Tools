@@ -1,5 +1,7 @@
 import { CharInput, CHAR_INPUT_STATUS } from './CharInput.js';
+import { DICT } from './dictionary.js';
 import { ALPH_TYPES } from './index.js';
+import { isValid } from './IsValid.js';
 
 /**
  * Represents a class that manages the character input elements and can generate a list of possible words.
@@ -9,15 +11,33 @@ export class WordGen {
     #alph;
     #prefiltered;
     #words;
+    #checkDict = false;
+    #solve = false;
     /**
      * Create a new `CharManager`
      */
     constructor(words = 5, chars = 5, alphType = 0, customCharset = '', parent = document.body) {
-        const ALPH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', NUMS = '1234567890',
-            ALLOW_ALPH = alphType === ALPH_TYPES.ALPH_ONLY || alphType === ALPH_TYPES.ALPH_NUMS,
-            ALLOW_NUMS = alphType === ALPH_TYPES.NUMS_ONLY || alphType === ALPH_TYPES.ALPH_NUMS,
-            ALLOW_CUST = alphType === ALPH_TYPES.CUST_ONLY;
-        this.#alph = (ALLOW_ALPH ? ALPH : '') + (ALLOW_NUMS ? NUMS : '') + (ALLOW_CUST ? this.#removeDuplicateChars(customCharset) : '');
+        switch (alphType) {
+            case (ALPH_TYPES.WORD_DICT): {
+                this.#checkDict = true;
+            }
+            case (ALPH_TYPES.ALPH_ONLY): {
+                this.#alph = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                break;
+            }
+            case (ALPH_TYPES.MATH_SOLV): {
+                this.#solve = true;
+                this.#alph = '1234567890+-*/=';
+                break;
+            }
+            case (ALPH_TYPES.CUST_ONLY): {
+                this.#alph = this.#removeDuplicateChars(customCharset);
+                break;
+            }
+            default: {
+                throw 'Invalid alphabet type.';
+            }
+        }
         this.#prefiltered = this.#alph;
         this.#charInputs = [];
         this.#words = [];
@@ -109,7 +129,18 @@ export class WordGen {
     generate() {
         this.#words = [];
         this.#prefilter();
-        this.#buildWords();
+        if (this.#checkDict) {
+            DICT.forEach(word => {
+                for (let i in word) {
+                    if (!this.#generateValidCharsForPosition(+i).includes(word[i])) {
+                        return;
+                    }
+                }
+                this.#words.push(word);
+            });
+        } else {
+            this.#buildWords();
+        }
         const requiredChars = this.#getRequiredCharacters();
         requiredChars.forEach(char => {
             this.#words = this.#words.filter(x => x.includes(char));
@@ -123,7 +154,13 @@ export class WordGen {
         const chars = this.#generateValidCharsForPosition(char);
         if (!chars.length) {
             if (word) {
-                this.#words.push(word);
+                if (this.#solve) {
+                    if (isValid(word)) {
+                        this.#words.push(word);
+                    }
+                } else {
+                    this.#words.push(word);
+                }
             }
             return;
         }
