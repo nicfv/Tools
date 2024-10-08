@@ -2,6 +2,9 @@
  * Check if a math equation string is numerically valid.
  */
 export function isValid(eq = '') {
+    if (eq.includes('//') || eq.includes('**') || eq.includes('-+') || (eq.match(/=/g) ?? []).length !== 1) {
+        return false;
+    }
     const parts = eq.replace('^', '**').split('='),
         evals = [];
     for (let i in parts) {
