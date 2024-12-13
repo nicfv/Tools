@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
+mkdir -p dist
+cd www || exit 1
 for tool in */ ; do
     cd "${tool}" || exit 1
-    echo "Building project in $(pwd)"
+    pwd
     ./run || exit 1
     cd ..
 done
