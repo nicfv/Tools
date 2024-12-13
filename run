@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-mkdir -p dist
+rm -rf dist && mkdir -p dist
 cd www || exit 1
 for tool in */ ; do
     cd "${tool}" || exit 1
