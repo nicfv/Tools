@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+for tool in */ ; do
+    cd "${tool}" || exit 1
+    echo "Building project in $(pwd)"
+    ./run || exit 1
+    cd ..
+done
