@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: 20
       - name: Build projects
-        run: cd www && ./run
+        run: ./run
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
