@@ -6,6 +6,7 @@ cp index.html ../dist
 for tool in */ ; do
     cd "${tool}" || exit 1
     pwd
-    ./run || exit 1
+    mkdir "../../dist/${tool}"
+    ./run || cp -r ./* "../../dist/${tool}"
     cd ..
 done
