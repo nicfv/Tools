@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+mkdir -p ../../dist/wordle && cp ./*.html ./*.css ./*.js ./*.svg ../../dist/wordle
