@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "build": "npx webpack --mode production",
+    "dev": "npx webpack --mode development --watch",
+    "clean": "rm -rf node_modules package-lock.json dist"
+  },
+  "devDependencies": {
+    "webpack-cli": "5.1.4"
+  }
+}

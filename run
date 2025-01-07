@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+rm -rf dist && mkdir -p dist
+cd www || exit 1
+for tool in */ ; do
+    cd "${tool}" || exit 1
+    pwd
+    ./run || exit 1
+    cd ..
+done
