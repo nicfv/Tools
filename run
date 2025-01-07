@@ -2,6 +2,7 @@
 
 rm -rf dist && mkdir dist
 cd www || exit 1
+cp index.html ../dist
 for tool in */ ; do
     cd "${tool}" || exit 1
     pwd
