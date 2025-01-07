@@ -16,18 +16,18 @@
     <div class="flex1">
         <div class="flex2">
             <h1>Time Value of Money</h1>
-            <sub title="Version">v1.0</sub>
+            <sub title="Version">v1.1</sub>
         </div>
         <div class="flex2">
             <select id="type" title="Calculation type">
-                <option value="P_F">P/F | Single payment present worth</option>
-                <option value="P_A">P/A | Uniform series present worth</option>
-                <option value="F_P">F/P | Single payment compound</option>
-                <option value="F_A">F/A | Uniform series compound</option>
-                <option value="A_F">A/F | Uniform series sinking fund</option>
-                <option value="A_P">A/P | Capital recovery</option>
+                <option value="P_F">P/F</option>
+                <option value="P_A">P/A</option>
+                <option value="F_P">F/P</option>
+                <option value="F_A">F/A</option>
+                <option value="A_F">A/F</option>
+                <option value="A_P">A/P</option>
             </select>
-            <label for="type">Calculation type</label>
+            <label for="type" id="type_label"></label>
         </div>
         <div class="flex2">
             <input type="number" min="0" step="0.01" id="x" title="Input">

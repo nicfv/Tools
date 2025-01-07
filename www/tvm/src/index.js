@@ -4,6 +4,7 @@ window.addEventListener('load', main);
 
 function main() {
     const selector = document.getElementById('type'),
+        typeLabel = document.getElementById('type_label'),
         inputLabel = document.getElementById('x_label'),
         outputLabel = document.getElementById('y_label'),
         num = id => +document.getElementById(id).value,
@@ -15,36 +16,42 @@ function main() {
     function changeValue() {
         switch (selector.value) {
             case ('P_F'): {
+                typeLabel.innerText = 'Single payment present worth';
                 inputLabel.innerText = 'Future worth, value, or amount [$]';
                 outputLabel.innerText = 'Present worth, value, or amount';
                 result.innerText = '$' + (P_F(num('i') / 100, num('n')) * num('x')).toFixed(2);
                 break;
             }
             case ('P_A'): {
+                typeLabel.innerText = 'Uniform series present worth';
                 inputLabel.innerText = 'Uniform amount per period [$]';
                 outputLabel.innerText = 'Present worth, value, or amount';
                 result.innerText = '$' + (P_A(num('i') / 100, num('n')) * num('x')).toFixed(2);
                 break;
             }
             case ('F_P'): {
+                typeLabel.innerText = 'Single payment compound';
                 inputLabel.innerText = 'Present worth, value, or amount [$]';
                 outputLabel.innerText = 'Future worth, value, or amount';
                 result.innerText = '$' + (F_P(num('i') / 100, num('n')) * num('x')).toFixed(2);
                 break;
             }
             case ('F_A'): {
+                typeLabel.innerText = 'Uniform series compound';
                 inputLabel.innerText = 'Uniform amount per period [$]';
                 outputLabel.innerText = 'Future worth, value, or amount';
                 result.innerText = '$' + (F_A(num('i') / 100, num('n')) * num('x')).toFixed(2);
                 break;
             }
             case ('A_F'): {
+                typeLabel.innerText = 'Uniform series sinking fund';
                 inputLabel.innerText = 'Future worth, value, or amount [$]';
                 outputLabel.innerText = 'Uniform amount per period';
                 result.innerText = '$' + (A_F(num('i') / 100, num('n')) * num('x')).toFixed(2);
                 break;
             }
             case ('A_P'): {
+                typeLabel.innerText = 'Capital recovery';
                 inputLabel.innerText = 'Present worth, value, or amount [$]';
                 outputLabel.innerText = 'Uniform amount per period';
                 result.innerText = '$' + (A_P(num('i') / 100, num('n')) * num('x')).toFixed(2);
