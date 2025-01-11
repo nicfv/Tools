@@ -6,10 +6,10 @@ import { lib } from './lib';
 window.addEventListener('load', main);
 
 const calculationTypes: Array<DropdownItem> = [
-    { key: 'Final value', value: 'F' },
-    { key: 'Initial value', value: 'P' },
-    { key: 'Annual interest rate', value: 'i' },
-    { key: 'Duration', value: 'n' },
+    { key: 'Final value (How much will I have?)', value: 'F' },
+    { key: 'Initial value (How much do I need right now?)', value: 'P' },
+    { key: 'Annual interest rate (What\'s my average growth?)', value: 'i' },
+    { key: 'Duration (How long do I need to wait?)', value: 'n' },
 ];
 
 let calculationType: Dropdown;
