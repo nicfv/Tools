@@ -5,6 +5,7 @@
     "clean": "rm -rf node_modules package-lock.json dist"
   },
   "devDependencies": {
+    "ts-loader": "9.5.2",
     "webpack-cli": "5.1.4"
   },
   "dependencies": {
