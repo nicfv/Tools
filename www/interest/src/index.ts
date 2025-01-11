@@ -38,12 +38,20 @@ function setupForm(): void {
         P = new Input(calculationType.getValue() === 'P' ? output : form, 'Initial Value [$]', calculationType.getValue() !== 'P', { min: 0, step: 0.01 }),
         i = new Input(calculationType.getValue() === 'i' ? output : form, 'Annual Interest Rate [%]', calculationType.getValue() !== 'i', { step: 0.01 }),
         n = new Input(calculationType.getValue() === 'n' ? output : form, 'Duration [yr]', calculationType.getValue() !== 'n', { min: 0, step: 1 / 12 }),
-        w = new Input(form, 'Compound Frequency [#/yr]', true, { min: 1 });
+        w = new Input(form, 'Compound Frequency [#/yr]', true, { min: 1 }),
+        btnClear = new Button(output, 'Clear');
     F.onChange(calculate);
     P.onChange(calculate);
     i.onChange(calculate);
     n.onChange(calculate);
     w.onChange(calculate);
+    btnClear.onClick(() => {
+        F.clear();
+        P.clear();
+        i.clear();
+        n.clear();
+        w.clear();
+    });
 
     function calculate(): void {
         console.log('Calculating...');

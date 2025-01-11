@@ -7,10 +7,12 @@ export class Button {
      * Create a new button on the parent element.
      */
     constructor(parent: Element, text: string) {
+        const container = document.createElement('div');
         this.element = document.createElement('button');
         this.element.textContent = text;
         this.element.setAttribute('title', text);
-        parent.appendChild(this.element);
+        container.appendChild(this.element);
+        parent.appendChild(container);
     }
     /**
      * Set the onClick event.
