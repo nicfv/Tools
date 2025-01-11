@@ -1,30 +1,30 @@
 import { SMath } from 'smath';
 
 export class Input {
-    static #input_id = 0;
-    #value = 0;
-    constructor(parent = document.body, title = '', min = 0, max = 100, step = 1) {
-        Input.#input_id++;
+    private static input_id: number = 0;
+    private value: number = 0;
+    constructor(parent: Element, title: string, min: number, max: number, step: number) {
+        Input.input_id++;
         const container = document.createElement('div'),
             input = document.createElement('input'),
             label = document.createElement('label'),
-            inputId = 'input_' + Input.#input_id;
+            inputId = 'input_' + Input.input_id;
         container.setAttribute('class', 'input');
         input.setAttribute('id', 'input_' + inputId);
         input.setAttribute('type', 'number');
         input.setAttribute('title', title);
         input.setAttribute('placeholder', title);
-        input.setAttribute('min', min);
-        input.setAttribute('max', max);
-        input.setAttribute('step', step);
+        input.setAttribute('min', min.toString());
+        input.setAttribute('max', max.toString());
+        input.setAttribute('step', step.toString());
         label.setAttribute('for', 'input_' + inputId);
         label.innerText = title;
         container.appendChild(input);
         container.appendChild(label);
         parent.appendChild(container);
-        input.addEventListener('input', () => this.#value = SMath.clamp(+input.value, min, max));
+        input.addEventListener('input', () => this.value = SMath.clamp(+input.value, min, max));
     }
-    getValue() {
-        return this.#value;
+    public getValue(): number {
+        return this.value;
     }
 }
