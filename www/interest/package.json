@@ -6,9 +6,9 @@
   },
   "devDependencies": {
     "ts-loader": "9.5.2",
-    "webpack-cli": "5.1.4"
+    "webpack-cli": "6.0.1"
   },
   "dependencies": {
-    "smath": "1.11.0"
+    "smath": "1.12.0"
   }
 }
