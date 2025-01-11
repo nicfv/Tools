@@ -2,11 +2,11 @@
  * Structure for an HTML button.
  */
 export class Button {
-    private element: HTMLButtonElement;
+    private readonly element: HTMLButtonElement;
     /**
      * Create a new button on the parent element.
      */
-    constructor(parent = document.body, text = '') {
+    constructor(parent: Element, text: string) {
         this.element = document.createElement('button');
         this.element.textContent = text;
         this.element.setAttribute('title', text);
