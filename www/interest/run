@@ -3,5 +3,5 @@
 npm run clean &&
     npm i &&
     npm run build &&
-    mkdir ../../dist/tvm &&
-    cp -r index.html style.css dist ../../dist/tvm
+    mkdir ../../dist/interest &&
+    cp -r index.html style.css dist ../../dist/interest
