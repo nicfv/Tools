@@ -10,7 +10,7 @@ for tool in */ ; do
     if [ -f run ] ; then
         ./run || exit 1
     else
-        cp -r ./* "../../dist/${tool}"
+        cp -vr ./* "../../dist/${tool}"
     fi
     cd ..
 done
