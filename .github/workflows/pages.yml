@@ -28,13 +28,15 @@ jobs:
         with:
           node-version: 20
       - name: Build projects
-        run: ./run
+        run: npm i && npm run build
+      - name: Clean source and config files
+        run: rm -rv www/*/src www/*/*.json www/*/webpack.config.js
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'dist'
+          path: 'www'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
