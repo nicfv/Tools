@@ -7,6 +7,10 @@ for tool in */ ; do
     cd "${tool}" || exit 1
     pwd
     mkdir "../../dist/${tool}"
-    ./run || cp -r ./* "../../dist/${tool}"
+    if [ -f run ] ; then
+        ./run || exit 1
+    else
+        cp -r ./* "../../dist/${tool}"
+    fi
     cd ..
 done
