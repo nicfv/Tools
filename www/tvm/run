@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-npm run clean &&
-    npm i &&
-    npm run build &&
-    cp -r index.html style.css dist ../../dist/tvm
