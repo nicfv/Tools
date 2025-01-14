@@ -69,7 +69,7 @@ function setupForm(): void {
                 break;
             }
             case ('n'): {
-                n.setValue(lib.n(P.getValue(), P.getValue(), i.getValue(), w.getValue()));
+                n.setValue(lib.n(F.getValue(), P.getValue(), i.getValue(), w.getValue()));
                 break;
             }
             default: {
