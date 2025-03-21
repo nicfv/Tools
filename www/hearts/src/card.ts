@@ -37,12 +37,6 @@ export class Card {
         }
     }
     /**
-     * Get the sorting order of this card.
-     */
-    public getOrdinal(): number {
-        return this.suit * 15 + this.value
-    }
-    /**
      * Get the color of this card.
      */
     public getColor(): string {
@@ -64,9 +58,7 @@ export class Card {
             default: { throw new Error('Invalid suit.'); }
         }
         switch (this.value) {
-            case (11): {
-                valueStr = 'J'; break;
-            }
+            case (11): { valueStr = 'J'; break; }
             case (12): { valueStr = 'Q'; break; }
             case (13): { valueStr = 'K'; break; }
             case (14): { valueStr = 'A'; break; }

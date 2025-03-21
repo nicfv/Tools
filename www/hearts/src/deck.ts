@@ -15,7 +15,6 @@ export class Deck {
                 this.cards.push(new Card(suit, value));
             }
         }
-        this.cards.sort((a, b) => a.getOrdinal() - b.getOrdinal());
     }
     /**
      * Get the cards currently in your hand.
