@@ -7,6 +7,14 @@ export class Card {
      */
     public played: boolean = false;
     /**
+     * Whether or not this card was passed to another player.
+     */
+    public passed: boolean = false;
+    /**
+     * Whether or not this card is in your hand.
+     */
+    public inHand: boolean = false;
+    /**
      * The point value of this card.
      */
     public readonly pointValue: number = 0;
