@@ -1,5 +1,3 @@
-import { Suit, Value } from './types';
-
 /**
  * A playing card.
  */
@@ -10,8 +8,13 @@ export class Card {
     public played: boolean = false;
     /**
      * Create a new instance of a playing card.
+     * @param suit [1-4]
+     * @param value [2-14]
      */
-    constructor(public readonly suit: Suit, public readonly value: Value) { }
+    constructor(public readonly suit: number, public readonly value: number) {
+        if (suit < 1 || suit > 4) { throw new Error('Suit (' + suit.toString() + ') is out of bounds [1-4].'); }
+        if (value < 2 || value > 14) { throw new Error('Value (' + value.toString() + ') is out of bounds [2-14].'); }
+    }
     /**
      * Get the sorting order of this card.
      */
