@@ -66,4 +66,18 @@ export class Card {
         }
         return suitStr + valueStr;
     }
+    /**
+     * Create a button with an event listener.
+     */
+    public getButton(onClick: (card: Card) => void): HTMLButtonElement {
+        const button: HTMLButtonElement = document.createElement('button');
+        button.textContent = this.toString();
+        button.style.color = this.getColor();
+        button.addEventListener('click', () => {
+            console.log('Click: ' + this.toString());
+            button.disabled = true;
+            onClick(this);
+        });
+        return button;
+    }
 }
