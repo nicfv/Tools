@@ -7,6 +7,10 @@ export class Card {
      */
     public played: boolean = false;
     /**
+     * The point value of this card.
+     */
+    public readonly pointValue: number = 0;
+    /**
      * Create a new instance of a playing card.
      * @param suit [1-4]
      * @param value [2-14]
@@ -14,12 +18,29 @@ export class Card {
     constructor(public readonly suit: number, public readonly value: number) {
         if (suit < 1 || suit > 4) { throw new Error('Suit (' + suit.toString() + ') is out of bounds [1-4].'); }
         if (value < 2 || value > 14) { throw new Error('Value (' + value.toString() + ') is out of bounds [2-14].'); }
+        if (suit === 4) {
+            this.pointValue = 1;
+        }
+        if (suit === 3 && value === 12) {
+            this.pointValue = 13;
+        }
+        if (suit === 2 && value === 11) {
+            this.pointValue = -10;
+        }
     }
     /**
      * Get the sorting order of this card.
      */
     public getOrdinal(): number {
         return this.suit * 15 + this.value
+    }
+    /**
+     * Get the color of this card.
+     */
+    public getColor(): string {
+        if (this.suit === 1 || this.suit === 3) { return '#000000'; }
+        if (this.suit === 2 || this.suit === 4) { return '#EE0000'; }
+        throw new Error('Invalid suit (' + this.suit.toString() + ').');
     }
     /**
      * Get a string representation of this card.
