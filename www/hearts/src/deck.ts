@@ -17,4 +17,10 @@ export class Deck {
         }
         this.cards.sort((a, b) => a.getOrdinal() - b.getOrdinal());
     }
+    /**
+     * Get the cards currently in your hand.
+     */
+    public hand(): Array<Card> {
+        return this.cards.filter(card => card.inHand && !card.played);
+    }
 }
