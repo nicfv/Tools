@@ -1,14 +1,7 @@
-import { Deck } from './deck';
-
-const deck = new Deck();
+import { Game } from './game';
 
 function main(): void {
-    const div = document.getElementById('main')!;
-    console.log('loaded!');
-    deck.cards.forEach(card => {
-        div.textContent += card.toString() + '\n';
-    });
-    return;
+    new Game(document.body).play();
 }
 
 window.addEventListener('load', main);
