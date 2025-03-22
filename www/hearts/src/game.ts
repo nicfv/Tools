@@ -16,12 +16,13 @@ import { Player } from './player';
 
 
 export class Game {
+    private readonly numPlayers: number = 3;
     private instruction: HTMLHeadingElement;
     private playerData: HTMLDivElement;
     private table: HTMLDivElement;
     private hand: HTMLDivElement;
     private step: number = 0;
-    private round: number = 0;
+    private passTo: number = 0;
     private deck: Deck = new Deck();
     private onTable: Array<Card> = [];
     private players: Array<Player> = [];
@@ -34,22 +35,39 @@ export class Game {
     }
     public play(): void {
         this.clearAll();
-        if (this.step === 0) {
-            this.newRound();
-        } else if (this.step === 1) {
-            this.pass();
-        } else {
-            this.setInstruction('Something else.');
+        this.step++;
+        switch (this.step) {
+            case (1): { this.start(); break; }
+            case (2): { this.join(); break; }
+            case (3): { this.deal(); break; }
+            case (4): { this.pass(); break; }
+            default: { }
         }
     }
-    public newRound(): void {
-        let cardsLeft: number = 13;
-        this.step++;
-        this.round++;
-        this.deck = new Deck();
+    public start(): void {
+        this.setInstruction('Which player will you pass to?');
+        for (let i = 1; i <= this.numPlayers; i++) {
+            const newButton = document.createElement('button');
+            newButton.textContent = 'P' + i;
+            newButton.addEventListener('click', () => {
+                console.log('Passing to P' + i);
+                this.passTo = i;
+                this.play();
+            });
+            this.table.append(newButton);
+        }
+    }
+    public join(): void {
+        this.setInstruction('Setting up players...');
         this.players = [];
-        // Pass left, right, then across
-        [1, 3, 2].forEach(id => this.players.push(new Player(this.round === id)));
+        for (let i = 1; i <= this.numPlayers; i++) {
+            this.players.push(new Player(this.passTo === i));
+        }
+        this.play();
+    }
+    public deal(): void {
+        let cardsLeft: number = 13;
+        this.deck = new Deck();
         this.setInstruction('You were dealt ' + cardsLeft + ' cards. Select them below.');
         this.hand.append(...this.deck.cards.map(card => card.getButton(me => {
             me.inHand = true;
@@ -62,8 +80,7 @@ export class Game {
     }
     public pass(): void {
         let passLeft: number = 3;
-        this.step++;
-        this.setInstruction('Round ' + this.round + ': Pass ' + passLeft + ' cards.');
+        this.setInstruction('Pass ' + passLeft + ' cards to player ' + this.passTo + '.');
         this.hand.append(...this.deck.hand().map(card => card.getButton(me => {
             me.inHand = false;
             me.passed = true;
@@ -85,6 +102,7 @@ export class Game {
     private clearAll(): void {
         this.clearChildren(this.instruction);
         this.clearChildren(this.playerData);
+        this.clearChildren(this.table);
         this.clearChildren(this.hand);
     }
 }
