@@ -26,6 +26,7 @@ export class Game {
     private passTo: number = 0;
     private deck: Deck = new Deck();
     private playerId: number = 0;
+    private suitLead: number = 0;
     private onTable: Array<Card> = [];
     private players: Array<Player> = [];
     constructor(parent: HTMLElement) {
@@ -34,8 +35,9 @@ export class Game {
         this.table = document.createElement('div');
         this.hand = document.createElement('div');
         parent.append(this.instruction, this.playerData, this.table, this.hand);
+        this.next();
     }
-    public go(): void {
+    private next(): void {
         this.clearAll();
         this.step++;
         switch (this.step) {
@@ -48,7 +50,7 @@ export class Game {
             default: { }
         }
     }
-    public choose(): void {
+    private choose(): void {
         this.setInstruction('Which player will you pass to?');
         for (let i = 1; i <= this.numPlayers; i++) {
             const newButton = document.createElement('button');
@@ -56,20 +58,20 @@ export class Game {
             newButton.addEventListener('click', () => {
                 console.log('Passing to P' + i);
                 this.passTo = i;
-                this.go();
+                this.next();
             });
             this.table.append(newButton);
         }
     }
-    public join(): void {
+    private join(): void {
         this.setInstruction('Setting up players...');
         this.players = [];
         for (let i = 1; i <= this.numPlayers; i++) {
             this.players.push(new Player(this.passTo === i));
         }
-        this.go();
+        this.next();
     }
-    public deal(): void {
+    private deal(): void {
         let cardsLeft: number = 13;
         this.deck = new Deck();
         this.setInstruction('You were dealt ' + cardsLeft + ' cards. Select them below.');
@@ -78,11 +80,11 @@ export class Game {
             cardsLeft--;
             this.setInstruction('Select ' + cardsLeft + ' more card(s).');
             if (cardsLeft <= 0) {
-                this.go();
+                this.next();
             }
         })));
     }
-    public pass(): void {
+    private pass(): void {
         let passLeft: number = this.passCount;
         this.setInstruction('Pass ' + passLeft + ' cards to player ' + this.passTo + '.');
         this.hand.append(...this.deck.hand().map(card => card.getButton(me => {
@@ -91,11 +93,11 @@ export class Game {
             passLeft--;
             this.setInstruction('Select ' + passLeft + ' more card(s).');
             if (passLeft <= 0) {
-                this.go();
+                this.next();
             }
         })));
     }
-    public receive(): void {
+    private receive(): void {
         let receiveLeft: number = this.passCount;
         this.setInstruction('You received ' + receiveLeft + ' cards. Select them below.');
         this.hand.append(...this.deck.couldReceive().map(card => card.getButton(me => {
@@ -103,11 +105,11 @@ export class Game {
             receiveLeft--;
             this.setInstruction('Select ' + receiveLeft + ' more cards.');
             if (receiveLeft <= 0) {
-                this.go();
+                this.next();
             }
         })));
     }
-    public start(): void {
+    private start(): void {
         const twoClubs: Card = this.deck.cards.find(card => card.twoClubs)!;
         if (twoClubs.inHand) {
             this.setInstruction('Play the 2 of clubs.');
@@ -115,10 +117,29 @@ export class Game {
             this.hand.append(twoClubs.getButton(me => {
                 this.table.append(twoClubs.toString());
                 me.played = true;
-                this.go();
+                this.next();
+            }));
+        } else if (twoClubs.passed) {
+            this.setInstruction('You passed the 2 of clubs to player ' + this.passTo);
+            this.playerId = this.passTo;
+            this.hand.append(twoClubs.getButton(me => {
+                this.table.append(twoClubs.toString());
+                me.played = true;
+                this.next();
             }));
         } else {
             this.setInstruction('Select which player has the 2 of clubs.');
+            for (let i = 1; i <= this.numPlayers; i++) {
+                const newButton = document.createElement('button');
+                newButton.textContent = 'P' + i;
+                newButton.addEventListener('click', () => {
+                    console.log('Started with P' + i);
+                    this.playerId = i;
+                    twoClubs.played = true;
+                    this.next();
+                });
+                this.table.append(newButton);
+            }
         }
     }
     private setInstruction(text: string): void {
