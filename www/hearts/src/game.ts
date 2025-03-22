@@ -2,22 +2,10 @@ import { Card } from './card';
 import { Deck } from './deck';
 import { Player } from './player';
 
-// 1. Draw 13 cards
-// 2. Pass 3 cards
-// 3. Start with the 2 of clubs
-// 4. Rotate until cards are exhausted
-//  a. 4 players play a card each
-//  b. 1 player takes the trick
-//  c. That player leads the next trick
-// Go to step 1.
-
-// Pass left, right, across
-// Play clockwise
-
-
 export class Game {
     private readonly numPlayers: number = 3;
     private readonly passCount: number = 3;
+    private readonly cardsPerHand: number = 13;
     private instruction: HTMLHeadingElement;
     private playerData: HTMLDivElement;
     private table: HTMLDivElement;
@@ -25,9 +13,11 @@ export class Game {
     private step: number = 0;
     private passTo: number = 0;
     private deck: Deck = new Deck();
+    private trickNum: number = 1;
     private playerId: number = 0;
     private suitLead: number = 0;
     private onTable: Array<Card> = [];
+    private you: Player = new Player(0, false);
     private players: Array<Player> = [];
     constructor(parent: HTMLElement) {
         this.instruction = document.createElement('h1');
@@ -47,6 +37,7 @@ export class Game {
             case (4): { this.pass(); break; }
             case (5): { this.receive(); break; }
             case (6): { this.start(); break; }
+            case (7): { this.play(); break; }
             default: { }
         }
     }
@@ -67,12 +58,12 @@ export class Game {
         this.setInstruction('Setting up players...');
         this.players = [];
         for (let i = 1; i <= this.numPlayers; i++) {
-            this.players.push(new Player(this.passTo === i));
+            this.players.push(new Player(i, this.passTo === i));
         }
         this.next();
     }
     private deal(): void {
-        let cardsLeft: number = 13;
+        let cardsLeft: number = this.cardsPerHand;
         this.deck = new Deck();
         this.setInstruction('You were dealt ' + cardsLeft + ' cards. Select them below.');
         this.hand.append(...this.deck.cards.map(card => card.getButton(me => {
@@ -115,16 +106,14 @@ export class Game {
             this.setInstruction('Play the 2 of clubs.');
             this.playerId = 0;
             this.hand.append(twoClubs.getButton(me => {
-                this.table.append(twoClubs.toString());
-                me.played = true;
+                this.playACard(me);
                 this.next();
             }));
         } else if (twoClubs.passed) {
             this.setInstruction('You passed the 2 of clubs to player ' + this.passTo);
             this.playerId = this.passTo;
             this.hand.append(twoClubs.getButton(me => {
-                this.table.append(twoClubs.toString());
-                me.played = true;
+                this.playACard(me);
                 this.next();
             }));
         } else {
@@ -135,12 +124,59 @@ export class Game {
                 newButton.addEventListener('click', () => {
                     console.log('Started with P' + i);
                     this.playerId = i;
-                    twoClubs.played = true;
+                    this.playACard(twoClubs);
                     this.next();
                 });
                 this.table.append(newButton);
             }
         }
+    }
+    private play(): void {
+        this.clearChildren(this.hand);
+        if (this.trickNum >= this.cardsPerHand) {
+            this.next();
+        }
+        if (this.playerId === 0) {
+            this.setInstruction('Trick #' + this.trickNum + ': Play a card.');
+            this.hand.append(...this.deck.hand(this.suitLead).map(card => card.getButton(me => {
+                this.playACard(me);
+                this.play();
+            })));
+        } else {
+            this.setInstruction('Trick #' + this.trickNum + ': Which card did player ' + this.playerId + ' play?');
+            const player: Player = this.players.find(p => p.id === this.playerId)!;
+            this.hand.append(...player.possibleCards(this.deck).map(card => card.getButton(me => {
+                this.playACard(me);
+                this.play();
+            })));
+        }
+    }
+    private playACard(card: Card): void {
+        if (this.suitLead === 0) {
+            this.suitLead = card.suit;
+        }
+        if (this.playerId === 0) {
+            this.you.play(card, this.suitLead);
+        } else {
+            this.players.find(player => player.id === this.playerId)!.play(card, this.suitLead);
+        }
+        this.onTable[this.playerId] = card;
+        this.table.append(card.toString());
+        // Count the number of cards that have been played
+        let cardsPlayed: number = 0;
+        for (const card of this.onTable) {
+            if (card) { cardsPlayed++; }
+        }
+        if (cardsPlayed >= 4) {
+            this.trickNum++;
+            this.suitLead = 0;
+            this.onTable = [];
+            this.clearChildren(this.table);
+        } else {
+            // Increment playerId by 1, wrapping around if necessary.
+            this.playerId = (this.playerId + 1) % (this.numPlayers + 1);
+        }
+        this.play();
     }
     private setInstruction(text: string): void {
         this.instruction.textContent = text;
