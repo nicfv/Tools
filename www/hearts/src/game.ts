@@ -17,6 +17,7 @@ import { Player } from './player';
 
 export class Game {
     private readonly numPlayers: number = 3;
+    private readonly passCount: number = 3;
     private instruction: HTMLHeadingElement;
     private playerData: HTMLDivElement;
     private table: HTMLDivElement;
@@ -41,6 +42,7 @@ export class Game {
             case (2): { this.join(); break; }
             case (3): { this.deal(); break; }
             case (4): { this.pass(); break; }
+            case (5): { this.receive(); break; }
             default: { }
         }
     }
@@ -79,7 +81,7 @@ export class Game {
         })));
     }
     public pass(): void {
-        let passLeft: number = 3;
+        let passLeft: number = this.passCount;
         this.setInstruction('Pass ' + passLeft + ' cards to player ' + this.passTo + '.');
         this.hand.append(...this.deck.hand().map(card => card.getButton(me => {
             me.inHand = false;
@@ -87,6 +89,18 @@ export class Game {
             passLeft--;
             this.setInstruction('Select ' + passLeft + ' more card(s).');
             if (passLeft <= 0) {
+                this.go();
+            }
+        })));
+    }
+    public receive(): void {
+        let receiveLeft: number = this.passCount;
+        this.setInstruction('You received ' + receiveLeft + ' cards. Select them below.');
+        this.hand.append(...this.deck.couldReceive().map(card => card.getButton(me => {
+            me.inHand = true;
+            receiveLeft--;
+            this.setInstruction('Select ' + receiveLeft + ' more cards.');
+            if (receiveLeft <= 0) {
                 this.go();
             }
         })));

@@ -22,4 +22,10 @@ export class Deck {
     public hand(): Array<Card> {
         return this.cards.filter(card => card.inHand && !card.played);
     }
+    /**
+     * Get the cards that you could be passed.
+     */
+    public couldReceive(): Array<Card> {
+        return this.cards.filter(card => !card.inHand && !card.passed && !card.played);
+    }
 }
