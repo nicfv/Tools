@@ -20,7 +20,7 @@ export class Deck {
      * Get the cards currently in your hand, optionally filtering by suit.
      */
     public hand(suit: number = 0): Array<Card> {
-        const filteredBySuit: Array<Card> = this.cards.filter(card => card.inHand && !card.played && (suit === 0 || suit === card.suit));
+        const filteredBySuit: Array<Card> = this.cards.filter(card => card.inHand && !card.played && suit === card.suit);
         if (filteredBySuit.length) {
             return filteredBySuit;
         } else {
