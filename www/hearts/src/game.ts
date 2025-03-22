@@ -33,7 +33,7 @@ export class Game {
         this.hand = document.createElement('div');
         parent.append(this.instruction, this.playerData, this.table, this.hand);
     }
-    public play(): void {
+    public go(): void {
         this.clearAll();
         this.step++;
         switch (this.step) {
@@ -52,7 +52,7 @@ export class Game {
             newButton.addEventListener('click', () => {
                 console.log('Passing to P' + i);
                 this.passTo = i;
-                this.play();
+                this.go();
             });
             this.table.append(newButton);
         }
@@ -63,7 +63,7 @@ export class Game {
         for (let i = 1; i <= this.numPlayers; i++) {
             this.players.push(new Player(this.passTo === i));
         }
-        this.play();
+        this.go();
     }
     public deal(): void {
         let cardsLeft: number = 13;
@@ -74,7 +74,7 @@ export class Game {
             cardsLeft--;
             this.setInstruction('Select ' + cardsLeft + ' more card(s).');
             if (cardsLeft <= 0) {
-                this.play();
+                this.go();
             }
         })));
     }
@@ -87,7 +87,7 @@ export class Game {
             passLeft--;
             this.setInstruction('Select ' + passLeft + ' more card(s).');
             if (passLeft <= 0) {
-                this.play();
+                this.go();
             }
         })));
     }
