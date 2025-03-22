@@ -78,6 +78,10 @@ export class Card {
         const div: HTMLDivElement = document.createElement('div');
         div.textContent = this.toString();
         div.style.color = this.getColor();
+        div.style.background = '#FFFFFF';
+        div.style.border = '1px solid black';
+        div.style.margin = '2px';
+        div.style.padding = '2px';
         div.className = Card.name;
         return div;
     }
@@ -87,6 +91,7 @@ export class Card {
     public getButton(onClick: (card: Card) => void): HTMLButtonElement {
         const button: HTMLButtonElement = document.createElement('button');
         button.append(this.getDiv());
+        button.className = Card.name;
         button.addEventListener('click', () => {
             console.log('Click: ' + this.toString());
             button.disabled = true;
