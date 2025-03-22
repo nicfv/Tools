@@ -15,9 +15,10 @@ export class Player {
     public readonly missingSuits: Array<number> = [];
     /**
      * Create a new player.
+     * @param id Numeric serial number of the player.
      * @param passTarget Whether or not this player is the target of card passing.
      */
-    constructor(private readonly passTarget: boolean) { }
+    constructor(public readonly id: number, private readonly passTarget: boolean) { }
     /**
      * This player plays a card.
      */
