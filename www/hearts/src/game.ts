@@ -128,7 +128,8 @@ export class Game {
     }
     private play(): void {
         this.clearChildren(this.hand);
-        if (this.trickNum >= this.cardsPerHand) {
+        this.showPlayerData();
+        if (this.trickNum > this.cardsPerHand) {
             // TODO: End of game.
             return;
         }
@@ -136,14 +137,12 @@ export class Game {
             this.setInstruction('Trick #' + this.trickNum + ': Play a card.');
             this.hand.append(...this.deck.hand(this.suitLead).map(card => card.getButton(me => {
                 this.playACard(me);
-                this.play();
             })));
         } else {
             this.setInstruction('Trick #' + this.trickNum + ': Which card did player ' + this.playerId + ' play?');
             const player: Player = this.players.find(p => p.id === this.playerId)!;
             this.hand.append(...player.possibleCards(this.deck).map(card => card.getButton(me => {
                 this.playACard(me);
-                this.play();
             })));
         }
     }
@@ -164,18 +163,53 @@ export class Game {
             if (card) { cardsPlayed++; }
         }
         if (cardsPlayed >= 4) {
-            this.trickNum++;
-            this.suitLead = 0;
-            this.onTable = [];
-            this.clearChildren(this.table);
+            // Determine which player takes the trick
+            const highCard: Card = this.onTable.filter(card => card.suit === this.suitLead).sort((a, b) => b.value - a.value)[0];
+            this.playerId = this.onTable.findIndex(card => card === highCard);
+            if (this.playerId === 0) {
+                this.setInstruction('You won trick #' + this.trickNum + ' with ' + highCard.toString());
+                this.you.take(this.onTable);
+            } else {
+                this.setInstruction('Player ' + this.playerId + ' won trick #' + this.trickNum + ' with ' + highCard.toString());
+                this.players.find(player => player.id === this.playerId)!.take(this.onTable);
+            }
+            this.clearChildren(this.hand);
+            const nextButton: HTMLButtonElement = document.createElement('button');
+            nextButton.textContent = 'Take';
+            this.hand.append(nextButton);
+            nextButton.addEventListener('click', () => {
+                // Advance to the next trick
+                this.trickNum++;
+                this.suitLead = 0;
+                this.onTable = [];
+                this.clearChildren(this.table);
+                this.play();
+            });
         } else {
             // Increment playerId by 1, wrapping around if necessary.
             this.playerId = (this.playerId + 1) % (this.numPlayers + 1);
+            this.play();
         }
-        this.play();
     }
     private setInstruction(text: string): void {
         this.instruction.textContent = text;
+    }
+    private showPlayerData(): void {
+        this.clearChildren(this.playerData);
+        const allDiv: HTMLDivElement = document.createElement('div');
+        for (const player of this.players) {
+            const playerDiv: HTMLDivElement = document.createElement('div');
+            playerDiv.style.display = 'flex';
+            playerDiv.style.flexWrap = 'wrap';
+            playerDiv.append('P' + player.id + ' (' + player.score + '):', ...player.possibleCards(this.deck).map(card => card.getDiv()));
+            allDiv.append(playerDiv, document.createElement('hr'));
+        }
+        const youDiv: HTMLDivElement = document.createElement('div');
+        youDiv.style.display = 'flex';
+        youDiv.style.flexWrap = 'wrap';
+        youDiv.append('You (' + this.you.score + '):', ...this.deck.hand().map(card => card.getDiv()))
+        allDiv.append(youDiv);
+        this.playerData.append(allDiv);
     }
     private clearChildren(node: Node): void {
         while (node.firstChild) {
