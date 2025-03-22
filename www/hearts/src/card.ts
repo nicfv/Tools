@@ -15,6 +15,10 @@ export class Card {
      */
     public inHand: boolean = false;
     /**
+     * Whether or not this is the 2 of Clubs.
+     */
+    public readonly twoClubs: boolean;
+    /**
      * The point value of this card.
      */
     public readonly pointValue: number = 0;
@@ -35,6 +39,7 @@ export class Card {
         if (suit === 2 && value === 11) {
             this.pointValue = -10;
         }
+        this.twoClubs = (suit === 1 && value === 2);
     }
     /**
      * Get the color of this card.
