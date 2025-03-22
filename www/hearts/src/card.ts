@@ -44,7 +44,7 @@ export class Card {
     /**
      * Get the color of this card.
      */
-    public getColor(): string {
+    private getColor(): string {
         if (this.suit === 1 || this.suit === 3) { return '#000000'; }
         if (this.suit === 2 || this.suit === 4) { return '#EE0000'; }
         throw new Error('Invalid suit (' + this.suit.toString() + ').');
@@ -72,12 +72,21 @@ export class Card {
         return suitStr + valueStr;
     }
     /**
+     * Get a visual representation of this card.
+     */
+    public getDiv(): HTMLDivElement {
+        const div: HTMLDivElement = document.createElement('div');
+        div.textContent = this.toString();
+        div.style.color = this.getColor();
+        div.className = Card.name;
+        return div;
+    }
+    /**
      * Create a button with an event listener.
      */
     public getButton(onClick: (card: Card) => void): HTMLButtonElement {
         const button: HTMLButtonElement = document.createElement('button');
-        button.textContent = this.toString();
-        button.style.color = this.getColor();
+        button.append(this.getDiv());
         button.addEventListener('click', () => {
             console.log('Click: ' + this.toString());
             button.disabled = true;
