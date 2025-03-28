@@ -90,7 +90,7 @@ export class Card {
         div.style.border = '1px solid black';
         div.style.margin = '2px';
         div.style.padding = '2px';
-        div.className = Card.name;
+        div.className = 'Card';
         return div;
     }
     /**
@@ -99,7 +99,7 @@ export class Card {
     public getButton(onClick: (card: Card) => void): HTMLButtonElement {
         const button: HTMLButtonElement = document.createElement('button');
         button.append(this.getDiv());
-        button.className = Card.name;
+        button.className = 'Card';
         button.addEventListener('click', () => {
             console.log('Click: ' + this.toString());
             button.disabled = true;
