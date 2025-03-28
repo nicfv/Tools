@@ -3,17 +3,9 @@
  */
 export class Card {
     /**
-     * Whether or not this card has been played.
+     * Determines where this card could be.
      */
-    public played: boolean = false;
-    /**
-     * Whether or not this card was passed to another player.
-     */
-    public passed: boolean = false;
-    /**
-     * Whether or not this card is in your hand.
-     */
-    public inHand: boolean = false;
+    public readonly hand: Array<boolean> = [false, true, true, true];
     /**
      * Whether or not this is the 2 of Clubs.
      */
@@ -40,6 +32,22 @@ export class Card {
             this.pointValue = -10;
         }
         this.twoClubs = (suit === 1 && value === 2);
+    }
+    /**
+     * Play a card.
+     */
+    public play(): void {
+        for (let i = 0; i < this.hand.length; i++) {
+            this.hand[i] = false;
+        }
+    }
+    /**
+     * This card must be owned by a certain player.
+     */
+    public mustBeOwnedBy(playerID: number): void {
+        for (let i = 0; i < this.hand.length; i++) {
+            this.hand[i] = (playerID === i);
+        }
     }
     /**
      * Get the color of this card.

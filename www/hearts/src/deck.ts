@@ -4,7 +4,7 @@ import { Card } from './card';
  * Represents a standard deck of 52 cards.
  */
 export class Deck {
-    public readonly cards: Array<Card>;
+    private readonly cards: Array<Card>;
     /**
      * Re-deal the deck.
      */
@@ -17,20 +17,33 @@ export class Deck {
         }
     }
     /**
-     * Get the cards currently in your hand, optionally filtering by suit.
+     * Get the possible cards currently in a player's hand, optionally filtering by suit.
      */
-    public hand(suit: number = 0): Array<Card> {
-        const filteredBySuit: Array<Card> = this.cards.filter(card => card.inHand && !card.played && suit === card.suit);
+    public hand(playerID: number = 0, suit: number = 0): Array<Card> {
+        const allMyCards: Array<Card> = this.cards.filter(card => card.hand[playerID]),
+            filteredBySuit: Array<Card> = allMyCards.filter(card => card.suit === suit);
         if (filteredBySuit.length) {
             return filteredBySuit;
         } else {
-            return this.cards.filter(card => card.inHand && !card.played);
+            return allMyCards;
         }
     }
     /**
      * Get the cards that you could be passed.
      */
     public couldReceive(): Array<Card> {
-        return this.cards.filter(card => !card.inHand && !card.passed && !card.played);
+        return this.cards.filter(card => !card.hand[0] && card.hand[1] && card.hand[2] && card.hand[3]);
+    }
+    /**
+     * Mark that a certain player is out of a suit.
+     */
+    public playerOutOfSuit(playerID: number, suit: number): void {
+        this.cards.filter(card => card.suit === suit).forEach(card => card.hand[playerID] = false);
+    }
+    /**
+     * Get the two of clubs.
+     */
+    public getTwoClubs(): Card {
+        return this.cards.find(card => card.twoClubs)!;
     }
 }

@@ -11,12 +11,13 @@ export class Game {
     private table: HTMLDivElement;
     private hand: HTMLDivElement;
     private passTo: number = 0;
+    private twoClubsPassed: boolean = false;
     private deck: Deck = new Deck();
     private trickNum: number = 1;
     private playerId: number = 0;
     private suitLead: number = 0;
     private onTable: Array<Card> = [];
-    private you: Player = new Player(0, false);
+    // private you: Player = new Player(0);
     private players: Array<Player> = [];
     constructor(parent: HTMLElement) {
         this.instruction = document.createElement('div');
@@ -48,8 +49,9 @@ export class Game {
         this.clearAll();
         this.setInstruction('Setting up players...');
         this.players = [];
-        for (let i = 1; i <= this.numPlayers; i++) {
-            this.players.push(new Player(i, this.passTo === i));
+        for (let i = 0; i <= this.numPlayers; i++) {
+            // Player ID = 0 is you
+            this.players.push(new Player(i));
         }
         this.deal();
     }
@@ -58,8 +60,8 @@ export class Game {
         let cardsLeft: number = this.cardsPerHand;
         this.deck = new Deck();
         this.setInstruction('You were dealt ' + cardsLeft + ' cards. Select them below.');
-        this.hand.append(...this.deck.cards.map(card => card.getButton(me => {
-            me.inHand = true;
+        this.hand.append(...this.deck.couldReceive().map(card => card.getButton(me => {
+            me.mustBeOwnedBy(0);
             cardsLeft--;
             this.setInstruction('Select ' + cardsLeft + ' more card(s).');
             if (cardsLeft <= 0) {
@@ -72,8 +74,10 @@ export class Game {
         let passLeft: number = this.passCount;
         this.setInstruction('Pass ' + passLeft + ' cards to player ' + this.passTo + '.');
         this.hand.append(...this.deck.hand().map(card => card.getButton(me => {
-            me.inHand = false;
-            me.passed = true;
+            me.mustBeOwnedBy(this.passTo);
+            if (me.twoClubs) {
+                this.twoClubsPassed = true;
+            }
             passLeft--;
             this.setInstruction('Select ' + passLeft + ' more card(s).');
             if (passLeft <= 0) {
@@ -86,7 +90,7 @@ export class Game {
         let receiveLeft: number = this.passCount;
         this.setInstruction('You received ' + receiveLeft + ' cards. Select them below.');
         this.hand.append(...this.deck.couldReceive().map(card => card.getButton(me => {
-            me.inHand = true;
+            me.mustBeOwnedBy(0);
             receiveLeft--;
             this.setInstruction('Select ' + receiveLeft + ' more cards.');
             if (receiveLeft <= 0) {
@@ -96,15 +100,15 @@ export class Game {
     }
     private start(): void {
         this.clearAll();
-        const twoClubs: Card = this.deck.cards.find(card => card.twoClubs)!;
-        if (twoClubs.inHand) {
+        const twoClubs: Card = this.deck.getTwoClubs();
+        if (twoClubs.hand[0]) {
             this.setInstruction('Play the 2 of clubs.');
             this.playerId = 0;
             this.hand.append(twoClubs.getButton(me => {
                 this.playACard(me);
                 this.play();
             }));
-        } else if (twoClubs.passed) {
+        } else if (this.twoClubsPassed) {
             this.setInstruction('You passed the 2 of clubs to player ' + this.passTo);
             this.playerId = this.passTo;
             this.hand.append(twoClubs.getButton(me => {
@@ -135,13 +139,12 @@ export class Game {
         }
         if (this.playerId === 0) {
             this.setInstruction('Trick #' + this.trickNum + ': Play a card.');
-            this.hand.append(...this.deck.hand(this.suitLead).map(card => card.getButton(me => {
+            this.hand.append(...this.deck.hand(0, this.suitLead).map(card => card.getButton(me => {
                 this.playACard(me);
             })));
         } else {
             this.setInstruction('Trick #' + this.trickNum + ': Which card did player ' + this.playerId + ' play?');
-            const player: Player = this.players.find(p => p.id === this.playerId)!;
-            this.hand.append(...player.possibleCards(this.deck).map(card => card.getButton(me => {
+            this.hand.append(...this.deck.hand(this.playerId).map(card => card.getButton(me => {
                 this.playACard(me);
             })));
         }
@@ -150,11 +153,7 @@ export class Game {
         if (this.suitLead === 0) {
             this.suitLead = card.suit;
         }
-        if (this.playerId === 0) {
-            this.you.play(card, this.suitLead);
-        } else {
-            this.players.find(player => player.id === this.playerId)!.play(card, this.suitLead);
-        }
+        this.players[this.playerId].play(card, this.suitLead, this.deck, this.cardsPerHand - this.trickNum);
         this.onTable[this.playerId] = card;
         this.table.append(card.getDiv());
         // Count the number of cards that have been played
@@ -168,11 +167,10 @@ export class Game {
             this.playerId = this.onTable.findIndex(card => card === highCard);
             if (this.playerId === 0) {
                 this.setInstruction('You won trick #' + this.trickNum + ' with ' + highCard.toString());
-                this.you.take(this.onTable);
             } else {
                 this.setInstruction('Player ' + this.playerId + ' won trick #' + this.trickNum + ' with ' + highCard.toString());
-                this.players.find(player => player.id === this.playerId)!.take(this.onTable);
             }
+            this.players[this.playerId].take(this.onTable);
             this.clearChildren(this.hand);
             const nextButton: HTMLButtonElement = document.createElement('button');
             nextButton.textContent = 'Take';
@@ -201,14 +199,10 @@ export class Game {
             const playerDiv: HTMLDivElement = document.createElement('div');
             playerDiv.style.display = 'flex';
             playerDiv.style.flexWrap = 'wrap';
-            playerDiv.append('P' + player.id + ' (' + player.score + '):', ...player.possibleCards(this.deck).map(card => card.getDiv()));
+            const playerName: string = (player.id === 0 ? 'You' : ('P' + player.id));
+            playerDiv.append(playerName + ' (' + player.score + '):', ...this.deck.hand(player.id).map(card => card.getDiv()));
             allDiv.append(playerDiv, document.createElement('hr'));
         }
-        const youDiv: HTMLDivElement = document.createElement('div');
-        youDiv.style.display = 'flex';
-        youDiv.style.flexWrap = 'wrap';
-        youDiv.append('You (' + this.you.score + '):', ...this.deck.hand().map(card => card.getDiv()))
-        allDiv.append(youDiv);
         this.playerData.append(allDiv);
     }
     private clearChildren(node: Node): void {
