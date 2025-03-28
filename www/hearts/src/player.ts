@@ -20,7 +20,6 @@ export class Player {
         card.play();
         if (card.suit !== leadSuit) {
             deck.playerOutOfSuit(this.id, leadSuit);
-            // TODO: Maybe needs to be broken out of the outer `if` block?
             const myPossibleHand: Array<Card> = deck.hand(this.id);
             if (myPossibleHand.length <= roundsLeft) {
                 myPossibleHand.forEach(card => card.mustBeOwnedBy(this.id));

@@ -17,7 +17,6 @@ export class Game {
     private playerId: number = 0;
     private suitLead: number = 0;
     private onTable: Array<Card> = [];
-    // private you: Player = new Player(0);
     private players: Array<Player> = [];
     constructor(parent: HTMLElement) {
         this.instruction = document.createElement('div');
@@ -201,7 +200,10 @@ export class Game {
             playerDiv.style.flexWrap = 'wrap';
             const playerName: string = (player.id === 0 ? 'You' : ('P' + player.id));
             playerDiv.append(playerName + ' (' + player.score + '):', ...this.deck.hand(player.id).map(card => card.getDiv()));
-            allDiv.append(playerDiv, document.createElement('hr'));
+            if (player.id > 0) {
+                allDiv.append(document.createElement('hr'));
+            }
+            allDiv.append(playerDiv);
         }
         this.playerData.append(allDiv);
     }
