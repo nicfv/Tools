@@ -133,7 +133,7 @@ export class Game {
         this.clearChildren(this.hand);
         this.showPlayerData();
         if (this.trickNum > this.cardsPerHand) {
-            // TODO: End of game.
+            this.endGame();
             return;
         }
         if (this.playerId === 0) {
@@ -186,6 +186,30 @@ export class Game {
             // Increment playerId by 1, wrapping around if necessary.
             this.playerId = (this.playerId + 1) % (this.numPlayers + 1);
             this.play();
+        }
+    }
+    private endGame(): void {
+        const takenPoints: Array<Player> = this.players.filter(player => player.hasTakenPoints);
+        if (takenPoints.length === 1) {
+            if (takenPoints[0].id === 0) {
+                this.setInstruction('Congratulations, you shot the moon!');
+            } else {
+                this.setInstruction('Player ' + takenPoints[0].id + ' shot the moon.');
+            }
+            return;
+        }
+        const winningScore: number = Math.min(...this.players.map(player => player.score)),
+            winners: Array<string> = this.players.filter(player => player.score <= winningScore).map(player => {
+                if (player.id === 0) {
+                    return 'You'
+                } else {
+                    return 'P' + player.id;
+                }
+            });
+        if (winners.length === 1) {
+            this.setInstruction('Winner: ' + winners[0] + ' (' + winningScore + ')');
+        } else {
+            this.setInstruction('Winners: ' + winners.join(',') + ' (' + winningScore + ')');
         }
     }
     private setInstruction(text: string): void {

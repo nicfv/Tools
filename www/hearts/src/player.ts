@@ -9,6 +9,7 @@ export class Player {
      * The player's score for the current round.
      */
     public score: number = 0;
+    public hasTakenPoints: boolean = false;
     /**
      * Create a new player.
      */
@@ -30,6 +31,11 @@ export class Player {
      * This player takes the trick.
      */
     public take(trick: Array<Card>): void {
-        trick.forEach(card => this.score += card.pointValue);
+        trick.forEach(card => {
+            this.score += card.pointValue;
+            if (card.pointValue > 0) {
+                this.hasTakenPoints = true;
+            }
+        });
     }
 }
