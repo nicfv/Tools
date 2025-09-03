@@ -9,10 +9,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css" />
     <script type="text/javascript" src="dist/main.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
 </head>
 
 <body>
     <h1>Dimensional Analysis</h1>
+    <div id="instructions">
+        <button id="close">x</button>
+        <h2>Instructions</h2>
+        <p>instruct</p>
+    </div>
+    <div id="container">
+        <div id="input-side">
+            <h2>Input Units</h2>
+            <div id="input-units">
+                <select id="input-unit-select">test</select>
+                <input id="input-exponent" type="number" placeholder="Exponent">
+                <button id="input-multiply">Multiply</button>
+                <button id="input-clear">Clear</button>
+            </div>
+            <h2>Input Quantity</h2>
+            <input id="input-quantity-value" type="number" placeholder="Quantity">
+            <p id="input-quantity">quantity</p>
+            <h2>Input Base Dimensions</h2>
+            <p id="input-dimensions">dimensions</p>
+        </div>
+        <div id="middle">
+            <p id="conversion">Conversion factor</p>
+            <button id="swap">Swap</button>
+        </div>
+        <div id="output-side">
+            <h2>Output Units</h2>
+            <div id="output-units">
+                <select id="output-unit-select">test</select>
+                <input id="output-exponent" type="number" placeholder="Exponent">
+                <button id="output-multiply">Multiply</button>
+                <button id="output-clear">Clear</button>
+            </div>
+            <h2>Output Quantity</h2>
+            <input id="output-quantity-value" type="number" placeholder="Quantity" readonly>
+            <p id="output-quantity">quantity</p>
+            <h2>Output Base Dimensions</h2>
+            <p id="output-dimensions">dimensions</p>
+        </div>
+    </div>
 </body>
 
 </html>

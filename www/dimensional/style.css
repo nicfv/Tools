@@ -1,3 +1,43 @@
 body {
-    background: pink;
+    font-family: sans-serif;
+    background: #eef;
+    color: #110;
+}
+
+h1 {
+    text-align: center;
+}
+
+#container,
+#instructions {
+    max-width: 60rem;
+    margin: auto;
+}
+
+#container {
+    display: flex;
+    align-items: center;
+}
+
+#middle {
+    margin: 0.5rem;
+    width: max-content;
+    text-align: center;
+}
+
+#input-side,
+#output-side {
+    width: 100%;
+}
+
+input {
+    width: 5rem;
+}
+
+button {
+    cursor: pointer;
+}
+
+button#close {
+    float: right;
 }
