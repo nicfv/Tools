@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build": "npx webpack --mode production",
+    "dev": "npx webpack --mode development --watch"
+  },
+  "dependencies": {
+    "dimensional": "1.0.2"
+  }
+}
