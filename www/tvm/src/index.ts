@@ -3,16 +3,16 @@ import { F_P, P_F, A_F, F_A, A_P, P_A } from './tvm';
 window.addEventListener('load', main);
 
 function main() {
-    const selector = document.getElementById('type'),
-        typeLabel = document.getElementById('type_label'),
-        inputLabel = document.getElementById('x_label'),
-        outputLabel = document.getElementById('y_label'),
-        num = id => +document.getElementById(id).value,
-        result = document.getElementById('y');
+    const selector = document.getElementById('type') as HTMLSelectElement,
+        typeLabel = document.getElementById('type_label') as HTMLLabelElement,
+        inputLabel = document.getElementById('x_label') as HTMLLabelElement,
+        outputLabel = document.getElementById('y_label') as HTMLLabelElement,
+        num = (id: string) => +(document.getElementById(id) as HTMLInputElement).value,
+        result = document.getElementById('y') as HTMLLabelElement;
     selector.addEventListener('input', changeValue);
-    document.getElementById('i').addEventListener('input', changeValue);
-    document.getElementById('n').addEventListener('input', changeValue);
-    document.getElementById('x').addEventListener('input', changeValue);
+    document.getElementById('i')!.addEventListener('input', changeValue);
+    document.getElementById('n')!.addEventListener('input', changeValue);
+    document.getElementById('x')!.addEventListener('input', changeValue);
     function changeValue() {
         switch (selector.value) {
             case ('P_F'): {
