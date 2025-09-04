@@ -4,6 +4,7 @@
     "dev": "npx webpack --mode development --watch"
   },
   "dependencies": {
-    "dimensional": "1.0.2"
+    "dimensional": "1.0.2",
+    "mathjax": "4.0.0"
   }
 }
