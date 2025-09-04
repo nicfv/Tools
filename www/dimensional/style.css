@@ -54,6 +54,11 @@ button {
     cursor: pointer;
 }
 
+button#input-clear,
+button#output-clear {
+    float: right;
+}
+
 button#close {
     float: right;
     background-color: firebrick;
