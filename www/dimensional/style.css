@@ -1,7 +1,13 @@
+* {
+    outline: none;
+    box-sizing: border-box;
+}
+
 body {
-    font-family: sans-serif;
-    background: #eef;
-    color: #110;
+    font-family: monospace;
+    background: #122;
+    color: #eef;
+    font-size: 1rem;
 }
 
 h1 {
@@ -30,8 +36,18 @@ h1 {
     width: 100%;
 }
 
+input,
+button,
+select {
+    padding: 0.25rem;
+    color: white;
+    background: black;
+    font-family: monospace;
+}
+
 input {
-    width: 5rem;
+    width: 6rem;
+    border: 1px solid gray;
 }
 
 button {
@@ -40,4 +56,6 @@ button {
 
 button#close {
     float: right;
+    background-color: firebrick;
+    font-weight: bold;
 }
