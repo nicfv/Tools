@@ -1,6 +1,13 @@
 import { prefixes, Quantity, Unit, units } from 'dimensional';
 import { NamedUnit, Pair } from './types';
-import * as mj from 'mathjax';
+
+// declare global {
+//     interface Window {
+//         MathJax: any;
+//     }
+// }
+
+declare const MathJax: any;
 
 window.addEventListener('load', main);
 
@@ -100,7 +107,7 @@ function setupListeners(): void {
     const conversion: HTMLParagraphElement = document.getElementById('conversion') as HTMLParagraphElement;
     function refresh(): void {
         quantities.input.textContent = '$$' + new Quantity(vals.input, currentUnits.input).toString() + '$$';
-        mj.MathJax.typeset();
+        MathJax.typeset([quantities.input]);
     }
     clears.input.addEventListener('click', () => {
         // unitSelects.input.selectedIndex = 0;
