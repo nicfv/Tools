@@ -1,73 +1,31 @@
-import { prefixes, Quantity, Unit, units } from 'dimensional';
-import { NamedUnit, Pair } from './types';
+import { Quantity, Unit, units } from 'dimensional';
+import * as SMath from 'smath';
+import { Pair } from './types';
+import * as Program from './program';
 
-// declare global {
-//     interface Window {
-//         MathJax: any;
-//     }
-// }
-
+/**
+ * https://www.mathjax.org/
+ */
 declare const MathJax: any;
 
 window.addEventListener('load', main);
 
-const allUnits: Array<NamedUnit> = [];
-const selectedUnit: Pair<Unit> = {
-    input: units.Unitless,
-    output: units.Unitless,
-};
-const vals: Pair<number> = {
-    input: 0,
-    output: 0,
-};
-const currentUnits: Pair<Unit> = {
-    input: units.Unitless,
-    output: units.Unitless,
-};
-
 function main(): void {
     console.log('Loaded!');
-    addUnits();
     setUnitOptions('input-unit-select');
     setUnitOptions('output-unit-select');
     setupListeners();
 }
 
-function addUnits(): void {
-    console.log('Generating units...');
-    const entryToNamedUnit = (entry: [string, Unit]): NamedUnit => {
-        return {
-            name: entry[0],
-            unit: entry[1],
-        }
-    };
-    allUnits.push(...Object.entries(units).map(entryToNamedUnit));
-    allUnits.push({ name: 'ton', unit: new Unit('ton', units.poundMass, 2000) });
-    allUnits.push({ name: 'micron', unit: units.meter.prefix(prefixes.micro) });
-    allUnits.push({ name: 'nanometer', unit: units.meter.prefix(prefixes.nano) });
-    allUnits.push({ name: 'milligram', unit: units.gram.prefix(prefixes.milli) });
-    allUnits.push({ name: 'kiloNewton', unit: units.Newton.prefix(prefixes.kilo) });
-    allUnits.push({ name: 'kilowatt', unit: units.watt.prefix(prefixes.kilo) });
-    allUnits.sort((a, b) => a.name.localeCompare(b.name));
-}
-
 function setUnitOptions(elementId: string): void {
     console.log('Adding units to ' + elementId + '...');
     const unitSelect: HTMLSelectElement = document.getElementById(elementId) as HTMLSelectElement;
-    for (const namedUnit of allUnits) {
+    for (const namedUnit of Program.getUnitNames()) {
         const unitOption: HTMLOptionElement = document.createElement('option');
-        unitOption.textContent = namedUnit.name;
+        unitOption.textContent = namedUnit;
         unitSelect.appendChild(unitOption);
     }
     unitSelect.value = 'Unitless';
-    unitSelect.addEventListener('input', () => {
-        const selected: Unit = allUnits.find(v => v.name === unitSelect.value)!.unit;
-        if (elementId.startsWith('input')) {
-            selectedUnit.input = selected;
-        } else if (elementId.startsWith('output')) {
-            selectedUnit.output = selected;
-        }
-    });
 }
 
 function setupListeners(): void {
@@ -104,15 +62,59 @@ function setupListeners(): void {
         input: document.getElementById('input-dimensions') as HTMLParagraphElement,
         output: document.getElementById('output-dimensions') as HTMLParagraphElement,
     };
+    const swap: HTMLButtonElement = document.getElementById('swap') as HTMLButtonElement;
     const conversion: HTMLParagraphElement = document.getElementById('conversion') as HTMLParagraphElement;
     function refresh(): void {
-        quantities.input.textContent = '$$' + new Quantity(vals.input, currentUnits.input).toString() + '$$';
-        MathJax.typeset([quantities.input]);
+        Program.quantities.input = new Quantity(+quantityValues.input.value, Program.currentUnits.input);
+        try {
+            Program.quantities.output = Program.quantities.input.as(Program.currentUnits.output);
+            quantityValues.output.value = Program.quantities.output.quantity.toString();
+            const conversionFactor: number = Program.currentUnits.input.to(Program.currentUnits.output);
+            if (conversionFactor >= 1) {
+                conversion.textContent = '$$\\text{in} \\times ' + SMath.round2(conversionFactor, 0.01) + ' = \\text{out}$$';
+            } else {
+                conversion.textContent = '$$\\text{in} \\div ' + SMath.round2(1 / conversionFactor, 0.01) + ' = \\text{out}$$';
+            }
+        } catch {
+            Program.quantities.output = new Quantity(0, Program.currentUnits.output);
+            quantityValues.output.value = '';
+            conversion.textContent = '$$\\dim(\\text{in}) \\ne \\dim(\\text{out})$$';
+        }
+        quantities.input.textContent = '$$' + Program.quantities.input.toString() + '$$';
+        quantities.output.textContent = '$$' + Program.quantities.output.toString() + '$$';
+        dimensions.input.textContent = '$$' + Program.quantities.input.units.dimensions.toString() + '$$';
+        dimensions.output.textContent = '$$' + Program.quantities.output.units.dimensions.toString() + '$$';
+        MathJax.typeset();
     }
     clears.input.addEventListener('click', () => {
-        // unitSelects.input.selectedIndex = 0;
         unitExponents.input.value = '';
         quantityValues.input.value = '';
+        Program.currentUnits.input = units.Unitless;
         refresh();
     });
+    clears.output.addEventListener('click', () => {
+        unitExponents.output.value = '';
+        quantityValues.output.value = '';
+        Program.currentUnits.output = units.Unitless;
+        refresh();
+    });
+    multipliers.input.addEventListener('click', () => {
+        const selectedUnit: Unit = Program.getUnitByName(unitSelects.input.value);
+        const exponent: number = +unitExponents.input.value;
+        Program.currentUnits.input = Program.currentUnits.input.times(selectedUnit.pow(exponent));
+        refresh();
+    });
+    multipliers.output.addEventListener('click', () => {
+        const selectedUnit: Unit = Program.getUnitByName(unitSelects.output.value);
+        const exponent: number = +unitExponents.output.value;
+        Program.currentUnits.output = Program.currentUnits.output.times(selectedUnit.pow(exponent));
+        refresh();
+    });
+    swap.addEventListener('click', () => {
+        Program.swapPair(Program.currentUnits);
+        refresh();
+    });
+    quantityValues.input.addEventListener('input', refresh);
+    quantityValues.output.addEventListener('input', refresh);
+    refresh();
 }

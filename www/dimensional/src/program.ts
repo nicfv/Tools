@@ -4,14 +4,7 @@ import { NamedUnit, Pair } from './types';
 /**
  * Available units to select from
  */
-export const allUnits: Array<NamedUnit> = [];
-/**
- * Currently selected unit
- */
-export const selectedUnit: Pair<Unit> = {
-    input: units.Unitless,
-    output: units.Unitless,
-};
+const allUnits: Array<NamedUnit> = [];
 /**
  * Active unit
  */
@@ -26,23 +19,33 @@ export const quantities: Pair<Quantity> = {
     input: new Quantity(0, units.Unitless),
     output: new Quantity(0, units.Unitless),
 };
-
 /**
- * Convert an object entry into a `NamedUnit`
+ * Get all available unit names to select from
  */
-function entryToNamedUnit(entry: [string, Unit]): NamedUnit {
-    return {
-        name: entry[0],
-        unit: entry[1],
-    };
+export function getUnitNames(): Array<string> {
+    return allUnits.map(nu => nu[0]).sort();
+}
+/**
+ * Find the unit matching the selected name
+ */
+export function getUnitByName(name: string): Unit {
+    return allUnits.find(nu => nu[0] === name)![1];
+}
+/**
+ * Swap the input and output of a pair
+ */
+export function swapPair<T>(pair: Pair<T>): void {
+    const temp: T = pair.input;
+    pair.input = pair.output;
+    pair.output = temp;
 }
 
 // Add custom units and convert to NamedUnit
-allUnits.push(...Object.entries(units).map(entryToNamedUnit));
-allUnits.push({ name: 'ton', unit: new Unit('ton', units.poundMass, 2000) });
-allUnits.push({ name: 'micron', unit: units.meter.prefix(prefixes.micro) });
-allUnits.push({ name: 'nanometer', unit: units.meter.prefix(prefixes.nano) });
-allUnits.push({ name: 'milligram', unit: units.gram.prefix(prefixes.milli) });
-allUnits.push({ name: 'kiloNewton', unit: units.Newton.prefix(prefixes.kilo) });
-allUnits.push({ name: 'kilowatt', unit: units.watt.prefix(prefixes.kilo) });
-allUnits.sort((a, b) => a.name.localeCompare(b.name));
+allUnits.push(...Object.entries(units));
+allUnits.push(['ton', new Unit('ton', units.poundMass, 2000)]);
+allUnits.push(['micron', units.meter.prefix(prefixes.micro)]);
+allUnits.push(['nanometer', units.meter.prefix(prefixes.nano)]);
+allUnits.push(['milligram', units.gram.prefix(prefixes.milli)]);
+allUnits.push(['kiloNewton', units.Newton.prefix(prefixes.kilo)]);
+allUnits.push(['kilowatt', units.watt.prefix(prefixes.kilo)]);
+allUnits.sort((a, b) => a[0].localeCompare(b[0]));
