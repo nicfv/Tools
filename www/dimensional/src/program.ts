@@ -1,4 +1,4 @@
-import { prefixes, Quantity, Unit, units } from 'dimensional';
+import { config, prefixes, Quantity, Unit, units } from 'dimensional';
 import { NamedUnit, Pair } from './types';
 
 /**
@@ -39,6 +39,9 @@ export function swapPair<T>(pair: Pair<T>): void {
     pair.input = pair.output;
     pair.output = temp;
 }
+
+// Configure the dimensional package
+config.scalarSymbol = '\\pi';
 
 // Add custom units and convert to NamedUnit
 allUnits.push(...Object.entries(units));
