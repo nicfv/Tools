@@ -10,30 +10,66 @@ body {
     font-size: 1rem;
 }
 
+/* .clear {
+    clear: both;
+} */
+
 h1 {
     text-align: center;
 }
 
-#container,
-#instructions {
+.heading {
+    background: dimgray;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.heading p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0;
+    padding: 0.3rem;
+}
+
+/* h3 {
+    background: dimgray;
+    padding: 0.25rem;
+    margin: 0;
+} */
+
+#column {
+    min-width: 45rem;
     max-width: 60rem;
     margin: auto;
 }
 
-#container {
+#instructions {
+    border: 1px solid yellow;
+}
+
+#row {
     display: flex;
     align-items: center;
 }
 
-#middle {
-    margin: 0.5rem;
-    width: max-content;
+#conversion-div {
+    /* margin: 0.5rem; */
+    /* width: max-content; */
     text-align: center;
+    border: 1px solid green;
 }
 
 #input-side,
 #output-side {
     width: 100%;
+    border: 1px solid red;
+    /* margin: 0.5rem; */
+}
+
+#input-units,
+#output-units {
+    padding: 0.5rem;
 }
 
 input,
@@ -56,11 +92,11 @@ button {
 
 button#input-clear,
 button#output-clear {
-    float: right;
+    /* float: right; */
 }
 
 button#close {
-    float: right;
+    /* float: right; */
     background-color: firebrick;
     font-weight: bold;
 }
