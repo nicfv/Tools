@@ -74,11 +74,12 @@ select {
     color: white;
     background: black;
     font-family: monospace;
+    font-size: 1rem;
 }
 
 input,
 select {
-    width: 6rem;
+    width: 8rem;
     border: 1px solid gray;
 }
 
@@ -86,13 +87,16 @@ button {
     cursor: pointer;
 }
 
-button#input-clear,
-button#output-clear {
-    /* float: right; */
-}
-
 button#close {
-    /* float: right; */
     background-color: firebrick;
     font-weight: bold;
+}
+
+/* Increase the font size of LaTeX equations */
+#input-quantity,
+#input-dimensions,
+#output-quantity,
+#output-dimensions,
+#conversion {
+    font-size: 1.5rem;
 }
