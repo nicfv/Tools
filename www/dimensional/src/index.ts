@@ -80,10 +80,10 @@ function setupListeners(): void {
             quantityValues.output.value = '';
             conversion.textContent = '$$\\dim(\\text{in}) \\ne \\dim(\\text{out})$$';
         }
-        quantities.input.textContent = '$$' + Program.quantities.input.toString() + '$$';
-        quantities.output.textContent = '$$' + Program.quantities.output.toString() + '$$';
-        dimensions.input.textContent = '$$' + Program.quantities.input.units.dimensions.toString() + '$$';
-        dimensions.output.textContent = '$$' + Program.quantities.output.units.dimensions.toString() + '$$';
+        quantities.input.textContent = '$$\\text{in} = ' + Program.quantities.input.toString() + '$$';
+        quantities.output.textContent = '$$\\text{out} = ' + Program.quantities.output.toString() + '$$';
+        dimensions.input.textContent = '$$\\dim(\\text{in}) = ' + Program.quantities.input.units.dimensions.toString() + '$$';
+        dimensions.output.textContent = '$$\\dim(\\text{out}) = ' + Program.quantities.output.units.dimensions.toString() + '$$';
         MathJax.typeset();
     }
     clears.input.addEventListener('click', () => {

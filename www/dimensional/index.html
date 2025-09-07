@@ -33,14 +33,11 @@
                     <sup><input id="input-exponent" type="number" placeholder="Exponent" title="Exponent"></sup>
                     <button id="input-multiply" title="Multiply by the selected unit raised to the exponent">*</button>
                 </div>
-                <div class="heading">
-                    <p>Quantity</p>
-                    <input id="input-quantity-value" type="number" placeholder="Quantity">
-                </div>
-                <p id="input-quantity"></p>
-                <h3>Input Base Dimensions</h3>
-                <p id="input-dimensions"></p>
+                <input id="input-quantity-value" type="number" placeholder="Quantity">
+                <p id="input-quantity" title="Input Quantity"></p>
+                <p id="input-dimensions" title="Input Dimensions"></p>
             </div>
+            <div class="spacer"></div>
             <div id="output-side">
                 <div class="heading">
                     <p>Output Units</p>
@@ -51,18 +48,14 @@
                     <sup><input id="output-exponent" type="number" placeholder="Exponent" title="Exponent"></sup>
                     <button id="output-multiply" title="Multiply by the selected unit raised to the exponent">*</button>
                 </div>
-                <div class="heading">
-                    <p>Quantity</p>
-                    <input id="output-quantity-value" type="number" placeholder="Quantity" readonly>
-                </div>
-                <p id="output-quantity"></p>
-                <h3>Output Base Dimensions</h3>
-                <p id="output-dimensions"></p>
+                <input id="output-quantity-value" type="number" placeholder="Quantity" readonly>
+                <p id="output-quantity" title="Output Quantity"></p>
+                <p id="output-dimensions" title="Output Dimensions"></p>
             </div>
         </div>
         <div id="conversion-div">
-            <p id="conversion"></p>
-            <button id="swap">Swap</button>
+            <p id="conversion" title="Conversion Formula"></p>
+            <button id="swap" title="Swap the input and outut units">Swap</button>
         </div>
     </div>
 </body>
