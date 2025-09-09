@@ -12,8 +12,7 @@ window.addEventListener('load', main);
 
 function main(): void {
     console.log('Loaded!');
-    setUnitOptions('input-unit-select');
-    setUnitOptions('output-unit-select');
+    setUnitOptions('unit-select');
     setupListeners();
 }
 

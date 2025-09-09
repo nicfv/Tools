@@ -13,50 +13,43 @@
 </head>
 
 <body>
-    <div id="column">
-        <h1>Dimensional Analysis</h1>
-        <div id="instructions">
-            <div class="heading">
-                <p>Instructions</p>
-                <button id="close" title="Close the instructions">x</button>
-            </div>
-            <p>instruct</p>
+    <h2>Dimensional Analysis</h2>
+    <div id="instructions">
+        <div class="heading">
+            <div class="title">Instructions</div>
+            <button id="instructions-close" title="Hide the instructions">-</button>
         </div>
-        <div id="row">
-            <div id="input-side">
-                <div class="heading">
-                    <p>Input Units</p>
-                    <button id="input-clear" title="Reset units and quantity">Clear</button>
-                </div>
-                <div id="input-units">
-                    <select id="input-unit-select" title="Select a unit"></select>
-                    <sup><input id="input-exponent" type="number" placeholder="Exponent" title="Exponent"></sup>
-                    <button id="input-multiply" title="Multiply by the selected unit raised to the exponent">*</button>
-                </div>
-                <input id="input-quantity-value" type="number" placeholder="Quantity">
-                <p id="input-quantity" title="Input Quantity"></p>
-                <p id="input-dimensions" title="Input Dimensions"></p>
-            </div>
-            <div class="spacer"></div>
-            <div id="output-side">
-                <div class="heading">
-                    <p>Output Units</p>
-                    <button id="output-clear" title="Reset units and quantity">Clear</button>
-                </div>
-                <div id="output-units">
-                    <select id="output-unit-select" title="Select a unit"></select>
-                    <sup><input id="output-exponent" type="number" placeholder="Exponent" title="Exponent"></sup>
-                    <button id="output-multiply" title="Multiply by the selected unit raised to the exponent">*</button>
-                </div>
-                <input id="output-quantity-value" type="number" placeholder="Quantity" readonly>
-                <p id="output-quantity" title="Output Quantity"></p>
-                <p id="output-dimensions" title="Output Dimensions"></p>
+        <p>instruct</p>
+    </div>
+    <div id="user-input">
+        <div class="heading">
+            <div class="title" id="user-header">Select Input Units</div>
+            <div id="controls">
+                <button id="set-input" title="Set input units">&leftarrow;</button>
+                <button id="set-output" title="Set output units">&rightarrow;</button>
+                <button id="clear" title="Reset units and quantity">Clear</button>
             </div>
         </div>
-        <div id="conversion-div">
-            <p id="conversion" title="Conversion Formula"></p>
-            <button id="swap" title="Swap the input and outut units">Swap</button>
+        <div id="units">
+            <select id="unit-select" title="Select a unit"></select>
+            <sup><input id="exponent" type="number" placeholder="Exponent" title="Exponent on that unit"></sup>
+            <button id="multiply" title="Multiply by the selected unit raised to the exponent">*</button>
         </div>
+        <p id="conversion" title="Conversion Formula"></p>
+        <p id="dimensions" title="Dimensions"></p>
+    </div>
+    <div id="conversion-div">
+        <div class="heading">
+            <div class="title">Unit Conversion</div>
+            <button id="conversion-close" title="Close the instructions">-</button>
+        </div>
+        <div id="quantities">
+            <input id="input-quantity" type="number" placeholder="Quantity" title="Numeric quantity to convert">
+            =
+            <input id="output-quantity" type="number" title="CTRL+C to copy output quantity" readonly>
+        </div>
+        <p id="quantity" title="Quantity"></p>
+        <button id="swap" title="Swap the input and outut units">Swap</button>
     </div>
 </body>
 

@@ -6,6 +6,10 @@ import { NamedUnit, Pair } from './types';
  */
 const allUnits: Array<NamedUnit> = [];
 /**
+ * The current units that are being edited
+ */
+export let editing: 'Input' | 'Output' = 'Input';
+/**
  * Active unit
  */
 export const currentUnits: Pair<Unit> = {
