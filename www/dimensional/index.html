@@ -27,6 +27,7 @@
             <div id="controls">
                 <button id="set-input" title="Set input units">&leftarrow;</button>
                 <button id="set-output" title="Set output units">&rightarrow;</button>
+                <button id="swap" title="Swap the input and outut units">Swap</button>
                 <button id="clear" title="Reset units and quantity">Clear</button>
             </div>
         </div>
@@ -35,21 +36,13 @@
             <sup><input id="exponent" type="number" placeholder="Exponent" title="Exponent on that unit"></sup>
             <button id="multiply" title="Multiply by the selected unit raised to the exponent">*</button>
         </div>
-        <p id="conversion" title="Conversion Formula"></p>
-        <p id="dimensions" title="Dimensions"></p>
-    </div>
-    <div id="conversion-div">
-        <div class="heading">
-            <div class="title">Unit Conversion</div>
-            <button id="conversion-close" title="Close the instructions">-</button>
-        </div>
+        <p id="quantity" title="Quantity">$$\text{Quantity}$$</p>
+        <p id="dimensions" title="Dimensions">$$\text{Dimensions}$$</p>
         <div id="quantities">
             <input id="input-quantity" type="number" placeholder="Quantity" title="Numeric quantity to convert">
-            =
+            <div id="conversion" title="Conversion Factor">$$\times 1.000=$$</div>
             <input id="output-quantity" type="number" title="CTRL+C to copy output quantity" readonly>
         </div>
-        <p id="quantity" title="Quantity"></p>
-        <button id="swap" title="Swap the input and outut units">Swap</button>
     </div>
 </body>
 

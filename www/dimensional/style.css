@@ -6,7 +6,7 @@
 body {
     margin: auto;
     max-width: 30rem;
-    background: #add;
+    background: whitesmoke;
     font-size: 120%;
     font-family: sans-serif;
 }
@@ -20,7 +20,6 @@ div.heading {
     border-color: black;
     border-width: 1px 0;
     border-style: solid;
-    /* border: 1px solid black; */
 }
 
 div.title {
@@ -44,6 +43,12 @@ div#quantities input {
     font-size: 100%;
 }
 
+div#quantities {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 input,
 select {
     padding: 0.25rem 0.5rem;
@@ -60,16 +65,18 @@ button {
     color: white;
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
+    transition: background-color 0.2s ease;
+    transition: transform 0.2s ease;
 }
 
 button:hover {
     background: #44c;
-    transform: translate(-1px, -1px);
+    transform: scale(1.1);
 }
 
 button:active {
     background: #229;
-    transform: translate(1px, 1px);
+    transform: scale(0.9);
 }
 
 button:disabled {
