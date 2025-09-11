@@ -18,3 +18,17 @@ export interface Pair<T> {
      */
     output: T;
 }
+
+/**
+ * The current program settings
+ */
+export interface ProgramSettings {
+    /**
+     * Whether or not to show instructions
+     */
+    showInstructions: boolean;
+    /**
+     * Which quantity is currently being edited
+     */
+    currentEdit: 'Input' | 'Output';
+}
