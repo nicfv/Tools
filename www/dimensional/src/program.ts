@@ -1,14 +1,17 @@
 import { config, prefixes, Quantity, Unit, units } from 'dimensional';
-import { NamedUnit, Pair } from './types';
+import { NamedUnit, Pair, ProgramSettings } from './types';
 
 /**
  * Available units to select from
  */
 const allUnits: Array<NamedUnit> = [];
 /**
- * The current units that are being edited
+ * The current program settings
  */
-export let editing: 'Input' | 'Output' = 'Input';
+export const settings: ProgramSettings = {
+    showInstructions: true,
+    currentEdit: 'Input',
+}
 /**
  * Active unit
  */
