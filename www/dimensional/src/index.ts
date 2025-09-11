@@ -41,6 +41,19 @@ function displayMath(quantityContainer: HTMLElement, dimensionContainer: HTMLEle
     dimensionContainer.textContent = '$$' + Program.currentUnits.input.dimensions.toString() + compare + Program.currentUnits.output.dimensions.toString() + '$$';
 }
 
+function formatConversion(conv: number): string {
+    const invert: boolean = conv < 1;
+    const operator: string = invert ? '\\div' : '\\times';
+    if (invert) {
+        conv = 1 / conv;
+    }
+    const log10: number = Math.floor(Math.log10(Math.abs(conv)));
+    if (log10 >= 3) {
+        return `$$${operator} \\left( ${SMath.round2(conv / (10 ** log10), 0.01)} \\times 10^{${log10}} \\right) =$$`;
+    }
+    return `$$${operator} ${SMath.round2(conv, 0.01)} =$$`;
+}
+
 function setupListeners(): void {
     console.log('Setting up listeners...');
     // Get all elevant HTML elements
@@ -83,11 +96,7 @@ function setupListeners(): void {
             Program.quantities.output = Program.quantities.input.as(Program.currentUnits.output);
             quantities.output.value = Program.quantities.output.quantity.toString();
             const conversionFactor: number = Program.currentUnits.input.to(Program.currentUnits.output);
-            if (conversionFactor >= 1) {
-                conversion.textContent = '$$\\times ' + SMath.round2(conversionFactor, 0.01) + ' =$$';
-            } else {
-                conversion.textContent = '$$\\div ' + SMath.round2(1 / conversionFactor, 0.01) + ' =$$';
-            }
+            conversion.textContent = formatConversion(conversionFactor);
         } catch {
             Program.quantities.output = new Quantity(0, Program.currentUnits.output);
             quantities.output.value = '';
