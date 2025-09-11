@@ -22,10 +22,6 @@ div.heading {
     border-style: solid;
 }
 
-div.title {
-    font-weight: bold;
-}
-
 div#controls button {
     height: 100%;
 }
@@ -41,20 +37,16 @@ div#units input,
 div#quantities input {
     width: 8rem;
     font-size: 100%;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid gray;
+    background: white;
 }
 
 div#quantities {
     display: flex;
     flex-direction: row;
     align-items: center;
-}
-
-input,
-select {
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    border: 1px solid gray;
-    background: white;
 }
 
 button {
