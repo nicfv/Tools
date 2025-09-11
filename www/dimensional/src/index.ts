@@ -16,9 +16,16 @@ function main(): void {
     setupListeners();
 }
 
+/**
+ * Shorthand for document.getElementById(...)
+ */
+function el<T extends HTMLElement>(id: string): T {
+    return document.getElementById(id) as T;
+}
+
 function setUnitOptions(elementId: string): void {
     console.log('Adding units to ' + elementId + '...');
-    const unitSelect: HTMLSelectElement = document.getElementById(elementId) as HTMLSelectElement;
+    const unitSelect: HTMLSelectElement = el(elementId);
     for (const namedUnit of Program.getUnitNames()) {
         const unitOption: HTMLOptionElement = document.createElement('option');
         unitOption.textContent = namedUnit;
@@ -27,93 +34,102 @@ function setUnitOptions(elementId: string): void {
     unitSelect.value = 'Unitless';
 }
 
+function displayMath(quantityContainer: HTMLElement, dimensionContainer: HTMLElement): void {
+    const sameDims: boolean = Program.currentUnits.input.dimensions.is(Program.currentUnits.output.dimensions);
+    const compare: string = sameDims ? ' = ' : ' \\ne ';
+    quantityContainer.textContent = '$$' + Program.quantities.input.toString() + compare + Program.quantities.output.toString() + '$$';
+    dimensionContainer.textContent = '$$' + Program.currentUnits.input.dimensions.toString() + compare + Program.currentUnits.output.dimensions.toString() + '$$';
+}
+
 function setupListeners(): void {
     console.log('Setting up listeners...');
-    document.getElementById('close')?.addEventListener('click', () => {
-        const instructions: HTMLElement = document.getElementById('instructions')!;
-        instructions.parentElement?.removeChild(instructions);
-    });
-    const clears: Pair<HTMLButtonElement> = {
-        input: document.getElementById('input-clear') as HTMLButtonElement,
-        output: document.getElementById('output-clear') as HTMLButtonElement,
+    // Get all elevant HTML elements
+    const instructionsHideShow: HTMLElement = el('instructions-hide-show');
+    const instructions: HTMLElement = el('instructions');
+    const unitSelectedHeading: HTMLElement = el('unit-select-heading');
+    const setOther: HTMLElement = el('set-other');
+    const swap: HTMLElement = el('swap');
+    const clear: HTMLElement = el('clear');
+    const unitSelect: HTMLSelectElement = el('unit-select');
+    const exponent: HTMLInputElement = el('exponent');
+    const mult: HTMLElement = el('multiply');
+    const quantity: HTMLElement = el('quantity');
+    const dimensions: HTMLElement = el('dimensions');
+    const quantities: Pair<HTMLInputElement> = {
+        input: el('input-quantity'),
+        output: el('output-quantity'),
     };
-    const multipliers: Pair<HTMLButtonElement> = {
-        input: document.getElementById('input-multiply') as HTMLButtonElement,
-        output: document.getElementById('output-multiply') as HTMLButtonElement,
-    };
-    const unitSelects: Pair<HTMLSelectElement> = {
-        input: document.getElementById('input-unit-select') as HTMLSelectElement,
-        output: document.getElementById('output-unit-select') as HTMLSelectElement,
-    };
-    const unitExponents: Pair<HTMLInputElement> = {
-        input: document.getElementById('input-exponent') as HTMLInputElement,
-        output: document.getElementById('output-exponent') as HTMLInputElement,
-    };
-    const quantityValues: Pair<HTMLInputElement> = {
-        input: document.getElementById('input-quantity-value') as HTMLInputElement,
-        output: document.getElementById('output-quantity-value') as HTMLInputElement,
-    };
-    const quantities: Pair<HTMLParagraphElement> = {
-        input: document.getElementById('input-quantity') as HTMLParagraphElement,
-        output: document.getElementById('output-quantity') as HTMLParagraphElement,
-    };
-    const dimensions: Pair<HTMLParagraphElement> = {
-        input: document.getElementById('input-dimensions') as HTMLParagraphElement,
-        output: document.getElementById('output-dimensions') as HTMLParagraphElement,
-    };
-    const swap: HTMLButtonElement = document.getElementById('swap') as HTMLButtonElement;
-    const conversion: HTMLParagraphElement = document.getElementById('conversion') as HTMLParagraphElement;
+    const conversion: HTMLElement = el('conversion');
     function refresh(): void {
-        Program.quantities.input = new Quantity(+quantityValues.input.value, Program.currentUnits.input);
+        if (Program.settings.showInstructions) {
+            instructionsHideShow.textContent = '-';
+            instructionsHideShow.title = 'Hide the instructions';
+            instructions.style.display = 'block';
+        } else {
+            instructionsHideShow.textContent = '+';
+            instructionsHideShow.title = 'Show the instructions';
+            instructions.style.display = 'none';
+        }
+        unitSelectedHeading.textContent = `Set ${Program.settings.currentEdit} Units`;
+        if (Program.settings.currentEdit === 'Input') {
+            setOther.textContent = '\u2192';
+            setOther.title = 'Set output units';
+        } else {
+            setOther.textContent = '\u2190';
+            setOther.title = 'Set input units';
+        }
+        Program.quantities.input = new Quantity(+quantities.input.value, Program.currentUnits.input);
         try {
             Program.quantities.output = Program.quantities.input.as(Program.currentUnits.output);
-            quantityValues.output.value = Program.quantities.output.quantity.toString();
+            quantities.output.value = Program.quantities.output.quantity.toString();
             const conversionFactor: number = Program.currentUnits.input.to(Program.currentUnits.output);
             if (conversionFactor >= 1) {
-                conversion.textContent = '$$\\text{in} \\times ' + SMath.round2(conversionFactor, 0.01) + ' = \\text{out}$$';
+                conversion.textContent = '$$\\times ' + SMath.round2(conversionFactor, 0.01) + ' =$$';
             } else {
-                conversion.textContent = '$$\\text{in} \\div ' + SMath.round2(1 / conversionFactor, 0.01) + ' = \\text{out}$$';
+                conversion.textContent = '$$\\div ' + SMath.round2(1 / conversionFactor, 0.01) + ' =$$';
             }
         } catch {
             Program.quantities.output = new Quantity(0, Program.currentUnits.output);
-            quantityValues.output.value = '';
-            conversion.textContent = '$$\\dim(\\text{in}) \\ne \\dim(\\text{out})$$';
+            quantities.output.value = '';
+            conversion.textContent = '$$\\ne$$';
         }
-        quantities.input.textContent = '$$\\text{in} = ' + Program.quantities.input.toString() + '$$';
-        quantities.output.textContent = '$$\\text{out} = ' + Program.quantities.output.toString() + '$$';
-        dimensions.input.textContent = '$$\\dim(\\text{in}) = ' + Program.quantities.input.units.dimensions.toString() + '$$';
-        dimensions.output.textContent = '$$\\dim(\\text{out}) = ' + Program.quantities.output.units.dimensions.toString() + '$$';
-        MathJax.typeset();
+        displayMath(quantity, dimensions);
+        MathJax.typesetPromise();
     }
-    clears.input.addEventListener('click', () => {
-        unitExponents.input.value = '';
-        quantityValues.input.value = '';
-        Program.currentUnits.input = units.Unitless;
+    instructionsHideShow.addEventListener('click', () => {
+        Program.settings.showInstructions = !Program.settings.showInstructions;
         refresh();
     });
-    clears.output.addEventListener('click', () => {
-        unitExponents.output.value = '';
-        quantityValues.output.value = '';
-        Program.currentUnits.output = units.Unitless;
-        refresh();
-    });
-    multipliers.input.addEventListener('click', () => {
-        const selectedUnit: Unit = Program.getUnitByName(unitSelects.input.value);
-        const exponent: number = +unitExponents.input.value;
-        Program.currentUnits.input = Program.currentUnits.input.times(selectedUnit.pow(exponent));
-        refresh();
-    });
-    multipliers.output.addEventListener('click', () => {
-        const selectedUnit: Unit = Program.getUnitByName(unitSelects.output.value);
-        const exponent: number = +unitExponents.output.value;
-        Program.currentUnits.output = Program.currentUnits.output.times(selectedUnit.pow(exponent));
+    setOther.addEventListener('click', () => {
+        if (Program.settings.currentEdit === 'Input') {
+            Program.settings.currentEdit = 'Output';
+        } else {
+            Program.settings.currentEdit = 'Input';
+        }
         refresh();
     });
     swap.addEventListener('click', () => {
         Program.swapPair(Program.currentUnits);
         refresh();
     });
-    quantityValues.input.addEventListener('input', refresh);
-    quantityValues.output.addEventListener('input', refresh);
+    clear.addEventListener('click', () => {
+        if (Program.settings.currentEdit === 'Input') {
+            Program.currentUnits.input = units.Unitless;
+        } else {
+            Program.currentUnits.output = units.Unitless;
+        }
+    });
+    mult.addEventListener('click', () => {
+        const selectedUnitName: string = unitSelect.value;
+        const exponentNum: number = +exponent.value;
+        const unitFactor: Unit = Program.getUnitByName(selectedUnitName).pow(exponentNum);
+        if (Program.settings.currentEdit === 'Input') {
+            Program.currentUnits.input = Program.currentUnits.input.times(unitFactor);
+        } else {
+            Program.currentUnits.output = Program.currentUnits.output.times(unitFactor);
+        }
+        refresh();
+    });
+    quantities.input.addEventListener('input', refresh);
     refresh();
 }
