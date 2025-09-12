@@ -30,7 +30,7 @@ jobs:
       - name: Build projects
         run: npm i && npm run build
       - name: Clean source and config files
-        run: rm -rv www/*/src www/*/*.json www/*/webpack.config.js
+        run: rm -rv www/*/src www/*/*.json
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
