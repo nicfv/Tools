@@ -1,4 +1,4 @@
-import { Quantity, Unit, units } from 'dimensional';
+import { config, Quantity, Unit, units } from 'dimensional';
 import * as SMath from 'smath';
 import { Pair } from './types';
 import * as Program from './program';
@@ -47,11 +47,11 @@ function formatConversion(conv: number): string {
     if (invert) {
         conv = 1 / conv;
     }
-    const log10: number = Math.floor(Math.log10(Math.abs(conv)));
-    if (log10 >= 3) {
-        return `$$${operator} \\left( ${SMath.round2(conv / (10 ** log10), 0.01)} \\times 10^{${log10}} \\right) =$$`;
-    }
-    return `$$${operator} ${SMath.round2(conv, 0.01)} =$$`;
+    const convQuant: Quantity = new Quantity(conv, units.Unitless);
+    config.showUnitless = false;
+    const convStr: string = `$$${operator} ${convQuant.toString()} =$$`;
+    config.showUnitless = true;
+    return convStr;
 }
 
 function setupListeners(): void {
