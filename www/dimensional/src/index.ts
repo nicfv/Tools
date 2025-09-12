@@ -39,6 +39,11 @@ function displayMath(quantityContainer: HTMLElement, dimensionContainer: HTMLEle
     const compare: string = sameDims ? ' = ' : ' \\ne ';
     quantityContainer.textContent = '$$' + Program.quantities.input.toString() + compare + Program.quantities.output.toString() + '$$';
     dimensionContainer.textContent = '$$' + Program.currentUnits.input.dimensions.toString() + compare + Program.currentUnits.output.dimensions.toString() + '$$';
+    if (sameDims) {
+        dimensionContainer.title = `Dimension: ${Program.getDimensionName(Program.currentUnits.input.dimensions)}`;
+    } else {
+        dimensionContainer.title = 'Dimensions not equal';
+    }
 }
 
 function formatConversion(conv: number): string {

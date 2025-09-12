@@ -1,4 +1,4 @@
-import { config, prefixes, Quantity, Unit, units } from 'dimensional';
+import { config, Dimension, dimensions, prefixes, Quantity, Unit, units } from 'dimensional';
 import { NamedUnit, Pair, ProgramSettings } from './types';
 
 /**
@@ -45,6 +45,18 @@ export function swapPair<T>(pair: Pair<T>): void {
     const temp: T = pair.input;
     pair.input = pair.output;
     pair.output = temp;
+}
+/**
+ * Get the name of a dimension
+ */
+export function getDimensionName(dimension: Dimension): string {
+    const dim2: { [name: string]: Dimension } = { ...dimensions };
+    for (const name in dim2) {
+        if (dim2[name].is(dimension)) {
+            return name;
+        }
+    }
+    return 'unknown';
 }
 
 // Configure the dimensional package
