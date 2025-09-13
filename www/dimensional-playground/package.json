@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npx webpack --config ../../webpack.config.js --mode production",
+    "dev": "npx webpack --config ../../webpack.config.js --mode development --watch"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "6.2.4",
