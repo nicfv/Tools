@@ -98,4 +98,10 @@ export class Hamburger {
     public isOpen(): boolean {
         return this.open;
     }
+    /**
+     * Set the onclick event handler.
+     */
+    public setOnclick(onclick: Function): void {
+        this.onclick = onclick;
+    }
 }
