@@ -5,19 +5,19 @@ import * as SMath from 'smath';
  */
 export interface Bounds {
     /**
-     * The initial value, defaults to zero.
+     * The initial value.
      */
     readonly val: number;
     /**
-     * The minimum bound, defaults to -Infinity.
+     * The minimum bound.
      */
     readonly min: number;
     /**
-     * The maximum bound, defaults to Infinity.
+     * The maximum bound.
      */
     readonly max: number;
     /**
-     * The interval between values, defaults to 1.
+     * The interval between values.
      */
     readonly step: number;
 }
@@ -29,26 +29,19 @@ export class Range {
     private static readonly className = 'input';
     private static id: number = 0;
     private readonly element: HTMLInputElement;
-    private readonly bounds: Bounds;
     /**
      * Create a new input element and append onto the parent element.
      */
-    constructor(parent: Element, title: string, bounds?: Partial<Bounds>) {
+    constructor(parent: HTMLElement, title: string, private readonly bounds: Bounds) {
         Range.id++;
-        this.bounds = {
-            val: bounds?.val ?? 0,
-            min: bounds?.min ?? -Infinity,
-            max: bounds?.max ?? Infinity,
-            step: bounds?.step ?? 1,
-        };
         this.element = document.createElement('input');
         const container = document.createElement('div'),
             label = document.createElement('label'),
             inputId = Range.className + '_' + Range.id;
         container.setAttribute('class', Range.className);
+        container.setAttribute('title', title);
         this.element.setAttribute('id', inputId);
         this.element.setAttribute('type', 'range');
-        this.element.setAttribute('title', title);
         this.element.setAttribute('min', this.bounds.min.toString());
         this.element.setAttribute('max', this.bounds.max.toString());
         this.element.setAttribute('step', this.bounds.step.toString());
@@ -60,10 +53,10 @@ export class Range {
         parent.appendChild(container);
     }
     /**
-     * Clear the input.
+     * Reset the input to its default value.
      */
-    public clear(): void {
-        this.element.value = '';
+    public reset(): void {
+        this.element.value = this.bounds.val.toString();
     }
     /**
      * Set the onChange event callback. Does not clear existing event listeners.
@@ -76,11 +69,5 @@ export class Range {
      */
     public getValue(): number {
         return SMath.clamp(SMath.round2(+this.element.value, this.bounds.step), this.bounds.min, this.bounds.max);
-    }
-    /**
-     * Set the current value of the input element.
-     */
-    public setValue(value: number): void {
-        this.element.value = SMath.clamp(SMath.round2(value, this.bounds.step), this.bounds.min, this.bounds.max).toString();
     }
 }
