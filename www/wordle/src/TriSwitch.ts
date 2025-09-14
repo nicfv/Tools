@@ -54,10 +54,10 @@ export class TriSwitch {
         this.sl.style.transition = 'fill ' + transition + 's, stroke ' + transition + 's';
         this.sw.style.transition = 'fill ' + transition + 's, cx ' + transition + 's, cy ' + transition + 's';
         if (canClickSlot) {
-            this.sl.onclick = () => this.click();
+            this.sl.addEventListener('click', () => this.click());
             this.sl.style.cursor = 'pointer';
         }
-        this.sw.onclick = () => this.click();
+        this.sw.addEventListener('click', () => this.click());
         this.sw.style.cursor = 'pointer';
         this.state = 0;
         this.states = stateColorScheme.length;
