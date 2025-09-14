@@ -25,7 +25,7 @@ export class CharInput {
             new StateColors('#999', '#030', '#999'),
             new StateColors('#999', '#330', '#999')
         ], 1.5, 3.5, 0.5, true, switchDiv);
-        this.switch.setOnclick(this.setColor);
+        this.switch.setOnclick(() => this.setColor());
         this.setColor();
     }
     /**
