@@ -21,7 +21,7 @@ export interface Bounds {
 /**
  * Represents a numeric input element with a label.
  */
-export class Input {
+export class Range {
     private static readonly className = 'input';
     private static id: number = 0;
     private readonly element: HTMLInputElement;
@@ -29,14 +29,14 @@ export class Input {
      * Create a new input element and append onto the parent element.
      */
     constructor(parent: Element, title: string, enabled: boolean, private readonly bounds?: Bounds) {
-        Input.id++;
+        Range.id++;
         this.element = document.createElement('input');
         const container = document.createElement('div'),
             label = document.createElement('label'),
-            inputId = Input.className + '_' + Input.id;
-        container.setAttribute('class', Input.className);
+            inputId = Range.className + '_' + Range.id;
+        container.setAttribute('class', Range.className);
         this.element.setAttribute('id', inputId);
-        this.element.setAttribute('type', 'number');
+        this.element.setAttribute('type', 'range');
         this.element.setAttribute('title', title);
         this.element.setAttribute('placeholder', title);
         this.element.setAttribute('min', (bounds?.min ?? -Infinity).toString());

@@ -1,5 +1,5 @@
 import { Dropdown, DropdownItem } from './dropdown';
-import { Input } from './range';
+import { Range } from './range';
 
 window.addEventListener('load', main);
 
@@ -7,15 +7,15 @@ function main(): void {
     console.log('Loaded!');
     const form = document.getElementById('form')!,
         output = document.getElementById('output')!,
-        BCR = new Input(form, 'Base Capture Rate [0-100%]', true, { min: 0, max: 100, step: 0.5 }),
-        CPM = new Input(form, 'CP Multiplier [0.094-0.8653]', true, { min: 0.094, max: 0.8653, step: 0.0001 }),
+        BCR = new Range(form, 'Base Capture Rate [0-100%]', true, { min: 0, max: 100, step: 0.5 }),
+        CPM = new Range(form, 'CP Multiplier [0.094-0.8653]', true, { min: 0.094, max: 0.8653, step: 0.0001 }),
         ball = new Dropdown(form, 'Ball Type', BallType),
         berry = new Dropdown(form, 'Berry Type', BerryType),
         throwtype = new Dropdown(form, 'Throw Modifier', ThrowType),
         curve = new Dropdown(form, 'Throw Style', CurveType),
         medal = new Dropdown(form, 'Type-Specific Medal', MedalType),
         encounter = new Dropdown(form, 'Encounter Type', EncounterType),
-        rate = new Input(output, 'Catch Rate [0-100%]', false, { min: 0, max: 100, step: 0.125 });
+        rate = new Range(output, 'Catch Rate [0-100%]', false, { min: 0, max: 100, step: 0.125 });
     BCR.setValue(20);
     CPM.setValue(0.64);
     BCR.onChange(calculate);
