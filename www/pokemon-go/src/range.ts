@@ -5,17 +5,21 @@ import * as SMath from 'smath';
  */
 export interface Bounds {
     /**
+     * The initial value, defaults to zero.
+     */
+    readonly val: number;
+    /**
      * The minimum bound, defaults to -Infinity.
      */
-    readonly min?: number;
+    readonly min: number;
     /**
      * The maximum bound, defaults to Infinity.
      */
-    readonly max?: number;
+    readonly max: number;
     /**
-     * The step, defaults to 1.
+     * The interval between values, defaults to 1.
      */
-    readonly step?: number;
+    readonly step: number;
 }
 
 /**
@@ -25,11 +29,18 @@ export class Range {
     private static readonly className = 'input';
     private static id: number = 0;
     private readonly element: HTMLInputElement;
+    private readonly bounds: Bounds;
     /**
      * Create a new input element and append onto the parent element.
      */
-    constructor(parent: Element, title: string, enabled: boolean, private readonly bounds?: Bounds) {
+    constructor(parent: Element, title: string, bounds?: Partial<Bounds>) {
         Range.id++;
+        this.bounds = {
+            val: bounds?.val ?? 0,
+            min: bounds?.min ?? -Infinity,
+            max: bounds?.max ?? Infinity,
+            step: bounds?.step ?? 1,
+        };
         this.element = document.createElement('input');
         const container = document.createElement('div'),
             label = document.createElement('label'),
@@ -38,15 +49,12 @@ export class Range {
         this.element.setAttribute('id', inputId);
         this.element.setAttribute('type', 'range');
         this.element.setAttribute('title', title);
-        this.element.setAttribute('placeholder', title);
-        this.element.setAttribute('min', (bounds?.min ?? -Infinity).toString());
-        this.element.setAttribute('max', (bounds?.max ?? Infinity).toString());
-        this.element.setAttribute('step', (bounds?.step ?? 1).toString());
-        if (!enabled) {
-            this.element.setAttribute('readonly', '');
-        }
+        this.element.setAttribute('min', this.bounds.min.toString());
+        this.element.setAttribute('max', this.bounds.max.toString());
+        this.element.setAttribute('step', this.bounds.step.toString());
+        this.element.setAttribute('value', this.bounds.val.toString());
         label.setAttribute('for', inputId);
-        label.innerText = title;
+        label.textContent = title;
         container.appendChild(this.element);
         container.appendChild(label);
         parent.appendChild(container);
@@ -67,12 +75,12 @@ export class Range {
      * Get the current value of the input element.
      */
     public getValue(): number {
-        return SMath.clamp(SMath.round2(+this.element.value, this.bounds?.step ?? 1), this.bounds?.min ?? -Infinity, this.bounds?.max ?? Infinity);
+        return SMath.clamp(SMath.round2(+this.element.value, this.bounds.step), this.bounds.min, this.bounds.max);
     }
     /**
      * Set the current value of the input element.
      */
     public setValue(value: number): void {
-        this.element.value = SMath.clamp(SMath.round2(value, this.bounds?.step ?? 1), this.bounds?.min ?? -Infinity, this.bounds?.max ?? Infinity).toString();
+        this.element.value = SMath.clamp(SMath.round2(value, this.bounds.step), this.bounds.min, this.bounds.max).toString();
     }
 }
