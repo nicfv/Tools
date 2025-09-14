@@ -4,6 +4,6 @@
     "dev": "npx webpack --config ../../webpack.config.js --mode development --watch"
   },
   "dependencies": {
-    "smath": "1.12.0"
+    "smath": "1.13.2"
   }
 }
