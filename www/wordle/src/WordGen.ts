@@ -1,7 +1,7 @@
-import { CharInput, CHAR_INPUT_STATUS } from './CharInput.js';
-import { DICT } from './dictionary.js';
-import { ALPH_TYPES } from './index.js';
-import { isValid } from './IsValid.js';
+import { CharInput, CHAR_INPUT_STATUS } from './CharInput';
+import { DICT } from './dictionary';
+import { ALPH_TYPES } from './index';
+import { isValid } from './IsValid';
 
 /**
  * Represents a class that manages the character input elements and can generate a list of possible words.
@@ -16,7 +16,7 @@ export class WordGen {
     /**
      * Create a new `CharManager`
      */
-    constructor(words: number, chars: number, alphType: number, customCharset: string, parent: HTMLElement) {
+    constructor(words: number, chars: number, alphType: ALPH_TYPES, customCharset: string, parent: HTMLElement) {
         switch (alphType) {
             case (ALPH_TYPES.WORD_DICT): {
                 this.checkDict = true;
