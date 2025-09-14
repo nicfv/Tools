@@ -1,4 +1,5 @@
 import { StateColors, TriSwitch } from './TriSwitch';
+import { CHAR_INPUT_STATUS } from './types';
 
 /**
  * Represents a control that allows a user to input a single character.
@@ -78,12 +79,3 @@ export class CharInput {
         this.setColor();
     }
 }
-
-/**
- * Represents the statuses for character input.
- */
-export enum CHAR_INPUT_STATUS {
-    CORRECT = 1,
-    INCORRECT_PLACEMENT = 2,
-    INCORRECT = 0,
-};

@@ -1,7 +1,7 @@
-import { CharInput, CHAR_INPUT_STATUS } from './CharInput';
+import { CharInput } from './CharInput';
 import { DICT } from './dictionary';
-import { ALPH_TYPES } from './index';
 import { isValid } from './IsValid';
+import { ALPH_TYPES, CHAR_INPUT_STATUS } from './types';
 
 /**
  * Represents a class that manages the character input elements and can generate a list of possible words.

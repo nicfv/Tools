@@ -1,6 +1,7 @@
 import { WordGen } from './WordGen';
 import { StateColors, TriSwitch } from './TriSwitch';
 import { Hamburger } from './Hamburger';
+import { ALPH_TYPES } from './types';
 
 /**
  * Global
@@ -80,13 +81,3 @@ el('gen').addEventListener('click', () => {
     el('copy').disabled = false;
     el('clear').disabled = false;
 });
-
-/**
- * Represents the types of allowable characters in an alphabet.
- */
-export enum ALPH_TYPES {
-    WORD_DICT = 0,
-    MATH_SOLV = 1,
-    ALPH_ONLY = 2,
-    CUST_ONLY = 3,
-};
