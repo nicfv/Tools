@@ -27,6 +27,10 @@ export class TriSwitch {
      */
     private readonly states: number;
     /**
+     * The onclick event listener
+     */
+    private onclick: Function = () => { };
+    /**
      * Create a new instance of a `TriSwitch`
      */
     constructor(private readonly width: number, private readonly height: number, private readonly stateColorScheme = [new StateColors('#666', '#000', '#f00'), new StateColors('#666', '#000', '#0f0'), new StateColors('#666', '#000', '#00f')], borderWidth: number, switchPadding: number, transition: number, canClickSlot: boolean = false, parent: HTMLElement = document.body) {
@@ -65,7 +69,6 @@ export class TriSwitch {
         if (this.states < 2) {
             throw 'Not enough states.';
         }
-        // this.onclick = () => { };
     }
     /**
      * This function is called when the switch is clicked.
@@ -77,7 +80,7 @@ export class TriSwitch {
         this.sw.setAttribute('fill', this.stateColorScheme[this.state].switchColor);
         this.sl.setAttribute('fill', this.stateColorScheme[this.state].backgroundColor);
         this.sl.setAttribute('stroke', this.stateColorScheme[this.state].borderColor);
-        // this.onclick();
+        this.onclick();
     }
     /**
      * Return the current state of the `TriSwitch`
@@ -90,6 +93,12 @@ export class TriSwitch {
      */
     public getStateDescription(): string {
         return this.stateColorScheme[this.state].optionalDescription;
+    }
+    /**
+     * Set the onclick event listener.
+     */
+    public setOnclick(onclick: Function): void {
+        this.onclick = onclick;
     }
 }
 
