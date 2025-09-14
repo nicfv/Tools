@@ -132,6 +132,7 @@ function setupListeners(): void {
         } else {
             Program.currentUnits.output = units.Unitless;
         }
+        refresh();
     });
     mult.addEventListener('click', () => {
         const selectedUnitName: string = unitSelect.value;
