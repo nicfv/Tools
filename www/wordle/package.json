@@ -1,13 +1,6 @@
 {
-  "name": "wordle",
-  "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "description": ""
+    "build": "npx webpack --config ../../webpack.config.js --mode production",
+    "dev": "npx webpack --config ../../webpack.config.js --mode development --watch"
+  }
 }
