@@ -1,5 +1,5 @@
 import { Dropdown, DropdownItem } from './dropdown';
-import { Input } from './input';
+import { Input } from './range';
 
 window.addEventListener('load', main);
 
