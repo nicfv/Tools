@@ -1,4 +1,4 @@
-import { StateColors, TriSwitch } from './TriSwitch.js';
+import { StateColors, TriSwitch } from './TriSwitch';
 
 /**
  * Represents a control that allows a user to input a single character.

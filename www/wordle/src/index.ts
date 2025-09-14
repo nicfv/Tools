@@ -1,6 +1,6 @@
-import { WordGen } from './WordGen.js';
-import { StateColors, TriSwitch } from './TriSwitch.js';
-import { Hamburger } from './Hamburger.js';
+import { WordGen } from './WordGen';
+import { StateColors, TriSwitch } from './TriSwitch';
+import { Hamburger } from './Hamburger';
 
 /**
  * Global
