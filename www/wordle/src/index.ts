@@ -44,7 +44,7 @@ updateSetup();
 el('go').addEventListener('click', () => {
     WG = new WordGen(+el('num_guesses').value || DEFAULT_GUESSES, +el('num_chars').value || DEFAULT_CHARS, ALPH_SWITCH.getState(), el('txt_cust').value, el('input'));
     document.body.removeChild(el('setup'));
-    el('charset').textContent = [...WG.getCharset()].join(' ');
+    el('charset').textContent = WG.getCharset().split('').join(' ');
     el('main').style.display = 'flex';
 });
 

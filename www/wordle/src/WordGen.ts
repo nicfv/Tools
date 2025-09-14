@@ -59,7 +59,7 @@ export class WordGen {
      * Remove duplicate characters in the custom charset.
      */
     private removeDuplicateChars(str: string): string {
-        return [...new Set(str.toUpperCase())].sort().join('');
+        return Array.from(new Set(str.toUpperCase())).sort().join('');
     }
     /**
      * Generate an array of characters that are valid for a certain position in the word.
