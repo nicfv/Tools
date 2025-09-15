@@ -12,7 +12,10 @@ body {
 body {
     padding: 2rem;
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
     justify-content: center;
     font-family: sans-serif;
     background: #111;
@@ -25,11 +28,12 @@ body>div {
     padding: 1rem;
 }
 
-input {
-    width: 20rem;
+div#ring {
+    align-items: center;
 }
 
 input {
+    width: 10rem;
     margin: 0.25rem 1rem;
     padding: 0.25rem;
     color: white;
