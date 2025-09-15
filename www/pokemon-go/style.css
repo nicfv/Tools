@@ -12,10 +12,13 @@ body {
 body {
     padding: 2rem;
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
     justify-content: center;
     font-family: sans-serif;
-    background: black;
+    background: #111;
     color: white;
 }
 
@@ -25,36 +28,16 @@ body>div {
     padding: 1rem;
 }
 
-select,
-input {
-    width: 20rem;
+div#ring {
+    align-items: center;
 }
 
-select,
-input,
-button {
+input {
+    width: 10rem;
     margin: 0.25rem 1rem;
     padding: 0.25rem;
     color: white;
     background: #111;
     border: 1px solid dimgray;
     border-radius: 0.25rem;
-}
-
-select:focus,
-input:focus {
-    background: #222;
-}
-
-button:hover {
-    background: #222;
-}
-
-button:active {
-    background: #333;
-}
-
-select,
-button {
-    cursor: pointer;
 }

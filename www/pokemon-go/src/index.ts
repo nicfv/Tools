@@ -1,70 +1,52 @@
-import { Dropdown, DropdownItem } from './dropdown';
+import { clamp, round2 } from 'smath';
 import { Range } from './range';
-
-const BallType: Array<DropdownItem> = [
-    { key: 'Poke Ball', value: 1 },
-    { key: 'Great Ball', value: 1.5 },
-    { key: 'Ultra Ball', value: 2 },
-    { key: 'Premier Ball', value: 1.05 },
-];
-
-const BerryType: Array<DropdownItem> = [
-    { key: 'Other/None', value: 1 },
-    { key: 'Razz Berry', value: 1.5 },
-    { key: 'Silver Pinap Berry', value: 1.8 },
-    { key: 'Golden Razz Berry', value: 2.5 },
-];
-
-const ThrowType: Array<DropdownItem> = [
-    { key: 'None', value: 1 },
-    { key: 'Nice', value: 1.15 },
-    { key: 'Great', value: 1.5 },
-    { key: 'Excellent', value: 1.85 },
-];
-
-const CurveType: Array<DropdownItem> = [
-    { key: 'Straight Throw', value: 1 },
-    { key: 'Curveball', value: 1.7 },
-];
-
-const MedalType: Array<DropdownItem> = [
-    { key: 'None', value: 1 },
-    { key: 'Bronze', value: 1.1 },
-    { key: 'Silver', value: 1.2 },
-    { key: 'Gold', value: 1.3 },
-    { key: 'Platinum', value: 1.4 },
-];
-
-const EncounterType: Array<DropdownItem> = [
-    { key: 'Wild Encounter', value: 1 },
-    { key: 'Research Reward', value: 2 },
-];
+import { Ring } from './ring';
 
 console.log('Loaded!');
-const form = document.getElementById('form')!,
-    output = document.getElementById('output')!,
-    BCR = new Range(form, 'Base Capture Rate [0-100%]', true, { min: 0, max: 100, step: 0.5 }),
-    CPM = new Range(form, 'CP Multiplier [0.094-0.8653]', true, { min: 0.094, max: 0.8653, step: 0.0001 }),
-    ball = new Dropdown(form, 'Ball Type', BallType),
-    berry = new Dropdown(form, 'Berry Type', BerryType),
-    throwtype = new Dropdown(form, 'Throw Modifier', ThrowType),
-    curve = new Dropdown(form, 'Throw Style', CurveType),
-    medal = new Dropdown(form, 'Type-Specific Medal', MedalType),
-    encounter = new Dropdown(form, 'Encounter Type', EncounterType),
-    rate = new Range(output, 'Catch Rate [0-100%]', false, { min: 0, max: 100, step: 0.125 });
-BCR.setValue(20);
-CPM.setValue(0.64);
-BCR.onChange(calculate);
-CPM.onChange(calculate);
-ball.onChange(calculate);
-berry.onChange(calculate);
-throwtype.onChange(calculate);
+const form = document.getElementById('form')!;
+const output = document.getElementById('output')!;
+const throwType = document.getElementById('throwtype')!;
+const color = new Range(form, 'Ring Color', { min: 0, max: 100, step: 1, val: 50 });
+const size = new Range(form, 'Ring Size', { min: 0, max: 100, step: 1, val: 50 });
+const curve = new Range(form, 'Throw was a curveball?', { min: 1, max: 2, step: 1, val: 1 });
+const ring = new Ring(100, 5, document.getElementById('ring')!);
+color.onChange(calculate);
+size.onChange(calculate);
 curve.onChange(calculate);
-medal.onChange(calculate);
-encounter.onChange(calculate);
 function calculate(): void {
-    console.log('Calculating...');
-    const modifier: number = ball.getValue() * berry.getValue() * throwtype.getValue() * curve.getValue() * medal.getValue() * encounter.getValue();
-    rate.setValue(100 - 100 * (1 - BCR.getValue() / 100 / 2 / CPM.getValue()) ** modifier);
+    console.log(`Calculating with parameters: color=${color.getValue()}, size=${size.getValue()}, curve=${curve.getValue()}...`);
+    ring.setColor(color.getValue() / 100);
+    ring.setSize(size.getValue() / 100);
+    if (size.getValue() < 30) {
+        throwType.textContent = 'Excellent!';
+    } else if (size.getValue() < 70) {
+        throwType.textContent = 'Great!';
+    } else if (size.getValue() < 100) {
+        throwType.textContent = 'Nice!';
+    } else {
+        throwType.textContent = 'Good';
+    }
+    /**
+     * Initial probability without factoring throw or curve modifiers.
+     */
+    const prob0: number = color.getValue() / 100;
+    /**
+     * Throw bonus modifier
+     */
+    const throwMod: number = 2 - size.getValue() / 100;
+    /**
+     * Curveball modifier
+     */
+    const curveMod: number = clamp(curve.getValue(), 1, 1.7);
+    /**
+     * Total bonus modifier not accounted for by `prob0`
+     */
+    const modifier: number = throwMod * curveMod;
+    /**
+     * Probability after modifier is applied
+     */
+    const prob1: number = 1 - (1 - prob0) ** modifier;
+    // Display the final probability
+    output.textContent = round2(prob1 * 100, 0.1).toString();
 }
 calculate();
