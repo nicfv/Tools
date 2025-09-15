@@ -4,6 +4,7 @@
     "dev": "npx webpack --config ../../webpack.config.js --mode development --watch"
   },
   "dependencies": {
-    "smath": "1.13.2"
+    "smath": "1.13.2",
+    "viridis": "1.2.1"
   }
 }
