@@ -2,7 +2,7 @@ import { F_P, P_F, A_F, F_A, A_P, P_A } from './tvm';
 
 window.addEventListener('load', main);
 
-function main() {
+function main(): void {
     const selector = document.getElementById('type') as HTMLSelectElement,
         typeLabel = document.getElementById('type_label') as HTMLLabelElement,
         inputLabel = document.getElementById('x_label') as HTMLLabelElement,
