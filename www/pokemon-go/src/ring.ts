@@ -7,7 +7,7 @@ import { Color, Gradient } from 'viridis';
 const ryg: Gradient = new Gradient([
     new Color(255, 0, 0),
     new Color(255, 255, 0),
-    new Color(0, 200, 0),
+    new Color(0, 220, 0),
 ]);
 /**
  * Represents a Pokemon catch ring
