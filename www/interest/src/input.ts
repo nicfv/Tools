@@ -1,4 +1,4 @@
-import { SMath } from 'smath';
+import * as SMath from 'smath';
 
 /**
  * Represents a structure for numeric bounds.
