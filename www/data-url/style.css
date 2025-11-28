@@ -2,6 +2,24 @@
     box-sizing: border-box;
 }
 
-body>* {
+html,
+body {
+    margin: 0;
+    border: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    padding: 1rem;
     display: flex;
+    flex-direction: column;
+}
+
+input {
+    padding: 1rem 0;
+}
+
+textarea {
+    height: 100%;
 }
