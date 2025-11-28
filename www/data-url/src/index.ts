@@ -13,3 +13,5 @@ fileInput.addEventListener('change', () => {
         outputText.textContent = (reader.result as string);
     });
 });
+
+outputText.addEventListener('focus', () => outputText.select());
