@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "npx webpack --config ../../webpack.config.js --mode production",
-    "dev": "npx webpack --config ../../webpack.config.js --mode development --watch"
+    "start": "../../.github/workflows/start",
+    "dev": "../../.github/workflows/dev"
   }
 }
