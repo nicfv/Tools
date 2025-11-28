@@ -2,6 +2,10 @@ import * as dim from 'dimensional';
 import * as cm from 'codemirror';
 import * as cmjs from '@codemirror/lang-javascript';
 /**
+ * Represents an object that can be converted to string
+ */
+type Stringable = { toString(): string };
+/**
  * The MathJax object
  */
 declare const MathJax: any;
@@ -56,16 +60,20 @@ function executeJSFunction(): void {
 /**
  * Render a mathematical expression
  */
-function LaTeX(LaTeX: { toString(): string }): void {
+function LaTeX(...LaTeX: Stringable[]): void {
     console.log('Printing...');
     const output = document.getElementById('out')!;
-    output.textContent += `$$${LaTeX.toString()}$$`
+    for (const line of LaTeX) {
+        output.textContent += `$$${line.toString()}$$`
+    }
 }
 /**
  * Log a message to the visible console
  */
-function log(text: string): void {
+function log(...text: Stringable[]): void {
     console.log('Logging...');
     const output = document.getElementById('log')!;
-    output.textContent += `${text.toString()}\r\n`;
+    for (const line of text) {
+        output.textContent += `${line.toString()}\r\n`;
+    }
 }
