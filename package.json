@@ -3,8 +3,8 @@
     "www/*"
   ],
   "scripts": {
-    "clean": "rm -rf dist node_modules package-lock.json www/*/dist www/*/node_modules www/*/package-lock.json",
-    "start": "npm start --workspaces"
+    "start": "npm start --workspaces",
+    "stop": ".github/workflows/clean"
   },
   "devDependencies": {
     "ts-loader": "9.5.4",
