@@ -3,7 +3,7 @@
     "www/*"
   ],
   "scripts": {
-    "start": "npm start --workspaces",
+    "start": "npm i && npm start --workspaces",
     "stop": ".github/workflows/clean"
   },
   "devDependencies": {
