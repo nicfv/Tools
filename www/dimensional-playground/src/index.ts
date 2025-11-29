@@ -24,21 +24,13 @@ log('Hello, world!');`;
 /**
  * The codemirror editor
  */
-let view: cm.EditorView;
-/**
- * Main entry point into the program
- */
-function main(): void {
-    console.log('Loaded!');
-    view = new cm.EditorView({
-        parent: document.getElementById('js')!,
-        doc: initExample,
-        extensions: [cm.basicSetup, cmjs.javascript()],
-    });
-    view.dom.addEventListener('keyup', executeJSFunction);
-    executeJSFunction();
-}
-window.addEventListener('load', main);
+const view: cm.EditorView = new cm.EditorView({
+    parent: document.getElementById('js')!,
+    doc: initExample,
+    extensions: [cm.basicSetup, cmjs.javascript()],
+});
+view.dom.addEventListener('keyup', executeJSFunction);
+executeJSFunction();
 /**
  * Execute the user-inputted JavaScript code
  */
