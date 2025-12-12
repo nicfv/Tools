@@ -4,7 +4,7 @@ import * as cmjs from '@codemirror/lang-javascript';
 /**
  * Represents an object that can be converted to string
  */
-type Stringable = { toString(): string };
+interface Stringable { toString(): string };
 /**
  * The MathJax object
  */
@@ -19,8 +19,8 @@ const argumentVars: Array<string> = ['LaTeX', 'log', 'Dimension', 'Prefix', 'Qua
 const initExample: string = `// Available variables & methods:
 // ${argumentVars.join(', ')}
 const distance = new Quantity(5, units.meter);
-LaTeX(distance.as(units.foot));
-log('Hello, world!');`;
+LaTeX(distance, '=', distance.as(units.foot));
+log('Input quantity =', distance.quantity);`;
 /**
  * The codemirror editor
  */
@@ -55,9 +55,7 @@ function executeJSFunction(): void {
 function LaTeX(...LaTeX: Stringable[]): void {
     console.log('Printing...');
     const output = document.getElementById('out')!;
-    for (const line of LaTeX) {
-        output.textContent += `$$${line.toString()}$$`
-    }
+    output.textContent += `\$\$${LaTeX.map(line => line.toString()).join(' ')}\$\$`;
 }
 /**
  * Log a message to the visible console
@@ -65,7 +63,5 @@ function LaTeX(...LaTeX: Stringable[]): void {
 function log(...text: Stringable[]): void {
     console.log('Logging...');
     const output = document.getElementById('log')!;
-    for (const line of text) {
-        output.textContent += `${line.toString()}\r\n`;
-    }
+    output.textContent += `${text.map(line => line.toString()).join(' ')}\r\n`;
 }
